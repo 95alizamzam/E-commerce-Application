@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_node/app_screens/home_screen.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_node/shared/app_cubit/cubit.dart';
 import 'package:flutter_node/shared/app_cubit/cubit_states.dart';
 import 'package:flutter_node/shared/constants.dart';
 import 'package:flutter_node/shared/styles.dart';
+import 'package:flutter_node/translations/local_keys.dart';
 import 'package:page_transition/page_transition.dart';
 
 class searchScreen extends StatelessWidget {
@@ -29,130 +31,140 @@ class searchScreen extends StatelessWidget {
       },
       builder: (context, state) {
         final cubit = appCubit.get(context);
-        return Scaffold(
-          backgroundColor: secondaryColor,
-          appBar: AppBar(
+        return WillPopScope(
+          onWillPop: () async {
+            goto(
+              child: homeScreen(),
+              type: PageTransitionType.fade,
+              context: context,
+            );
+            return true;
+          },
+          child: Scaffold(
             backgroundColor: secondaryColor,
-            elevation: 0,
-            titleSpacing: 0,
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios_new_outlined,
-                color: primaryColor,
+            appBar: AppBar(
+              backgroundColor: secondaryColor,
+              elevation: 0,
+              titleSpacing: 10,
+              // leading: IconButton(
+              //   icon: Icon(
+              //     Icons.arrow_back_ios_new_outlined,
+              //     color: primaryColor,
+              //   ),
+              //   onPressed: () {
+              //     cubit.searchedProducts!.data = [];
+              //     goto(
+              //       child: homeScreen(),
+              //       type: PageTransitionType.fade,
+              //       context: context,
+              //     );
+              //   },
+              // ),
+              title: Text(
+                LocaleKeys.Search.tr(),
+                style: TextStyle(color: primaryColor),
               ),
-              onPressed: () {
-                cubit.searchedProducts!.data = [];
-                goto(
-                  child: homeScreen(),
-                  type: PageTransitionType.fade,
-                  context: context,
-                );
-              },
-            ),
-            title: Text(
-              'Search',
-              style: TextStyle(color: primaryColor),
-            ),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  searchController.clear();
-                  cubit.clearSearchProducts();
-                },
-                icon: Icon(
-                  Icons.clear_all,
-                  color: primaryColor,
-                ),
-              )
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              children: [
-                Form(
-                  key: formKey,
-                  child: TextFormField(
-                    style: TextStyle(color: primaryColor),
-                    controller: searchController,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: primaryColor,
-                      ),
-                      hintText: 'Type To Search',
-                      hintStyle: TextStyle(color: primaryColor),
-                      enabled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: primaryColor,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: primaryColor,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    validator: (String? val) {
-                      if (val!.isEmpty || val.trim() == "") {
-                        return "";
-                      }
-                      return null;
-                    },
-                    onFieldSubmitted: (val) {
-                      if (!formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            backgroundColor: secondaryColor,
-                            duration: Duration(milliseconds: 600),
-                            content: Text(
-                              'Empty Field',
-                              style: TextStyle(color: primaryColor),
-                            )));
-                        return;
-                      } else {
-                        cubit.searchProducts(word: val.toString().trim());
-                      }
-                    },
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    searchController.clear();
+                    cubit.clearSearchProducts();
+                  },
+                  icon: Icon(
+                    Icons.clear_all,
+                    color: primaryColor,
                   ),
-                ),
-                const SizedBox(height: 20),
-                state is getSearchedProductsLoading
-                    ? LinearProgressIndicator(
-                        backgroundColor: secondaryColor,
-                        color: primaryColor,
-                        minHeight: 2,
-                      )
-                    : Container(),
-                state is searchedProductsEmpty
-                    ? Text(
-                        'There are No Products For this Search',
-                        style: TextStyle(color: primaryColor),
-                      )
-                    : (cubit.searchedProducts == null)
-                        ? Text(
-                            'Search about Your Products ',
-                            style: TextStyle(
-                              color: primaryColor,
-                              fontSize: 20,
-                            ),
-                          )
-                        : Expanded(
-                            child: ListView(
-                            children: cubit.searchedProducts!.data
-                                .map((searchedItem) {
-                              return searchedItemBuilder(
-                                imgUrl: searchedItem.image.toString(),
-                                price: searchedItem.price.toString(),
-                                subtitle: searchedItem.descreption.toString(),
-                                title: searchedItem.title.toString(),
-                              );
-                            }).toList(),
-                          )),
+                )
               ],
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                children: [
+                  Form(
+                    key: formKey,
+                    child: TextFormField(
+                      style: TextStyle(color: primaryColor),
+                      controller: searchController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: primaryColor,
+                        ),
+                        hintText: 'Type To Search',
+                        hintStyle: TextStyle(color: primaryColor),
+                        enabled: true,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: primaryColor,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: primaryColor,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      validator: (String? val) {
+                        if (val!.isEmpty || val.trim() == "") {
+                          return "";
+                        }
+                        return null;
+                      },
+                      onFieldSubmitted: (val) {
+                        if (!formKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: secondaryColor,
+                              duration: Duration(milliseconds: 600),
+                              content: Text(
+                                'Empty Field',
+                                style: TextStyle(color: primaryColor),
+                              )));
+                          return;
+                        } else {
+                          cubit.searchProducts(word: val.toString().trim());
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  state is getSearchedProductsLoading
+                      ? LinearProgressIndicator(
+                          backgroundColor: secondaryColor,
+                          color: primaryColor,
+                          minHeight: 2,
+                        )
+                      : Container(),
+                  state is searchedProductsEmpty
+                      ? Text(
+                          'There are No Products For this Search',
+                          style: TextStyle(color: primaryColor),
+                        )
+                      : (cubit.searchedProducts == null)
+                          ? Text(
+                              'Search about Your Products ',
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 20,
+                              ),
+                            )
+                          : Expanded(
+                              child: ListView(
+                              children: cubit.searchedProducts!.data
+                                  .map((searchedItem) {
+                                return searchedItemBuilder(
+                                  imgUrl: searchedItem.image.toString(),
+                                  price: searchedItem.price.toString(),
+                                  subtitle: searchedItem.descreption.toString(),
+                                  title: searchedItem.title.toString(),
+                                );
+                              }).toList(),
+                            )),
+                ],
+              ),
             ),
           ),
         );

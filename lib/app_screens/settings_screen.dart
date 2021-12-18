@@ -10,7 +10,9 @@ import 'package:flutter_node/shared/constants.dart';
 import 'package:flutter_node/shared/shared_prefrences/shared_prefrences.dart';
 import 'package:flutter_node/shared/styles.dart';
 import 'package:flutter_node/shared/user_cubit/cubit.dart';
+import 'package:flutter_node/translations/local_keys.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class settingsScreen extends StatelessWidget {
   const settingsScreen({Key? key}) : super(key: key);
@@ -21,103 +23,171 @@ class settingsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         final cubit = appCubit.get(context);
-        return Scaffold(
-          backgroundColor: secondaryColor,
-          appBar: AppBar(
-            elevation: 0,
+        return WillPopScope(
+          onWillPop: () async {
+            goto(
+              child: homeScreen(),
+              type: PageTransitionType.fade,
+              context: context,
+            );
+            return true;
+          },
+          child: Scaffold(
             backgroundColor: secondaryColor,
-            title: Text(
-              'Settings',
-              style: TextStyle(color: primaryColor),
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: secondaryColor,
+              title: Text(
+                LocaleKeys.Settings.tr(),
+                style: TextStyle(color: primaryColor),
+              ),
+              titleSpacing: 10,
+              // leading: IconButton(
+              //   onPressed: () {
+              //     goto(
+              //       child: homeScreen(),
+              //       type: PageTransitionType.fade,
+              //       context: context,
+              //     );
+              //   },
+              //   icon: Icon(
+              //     context.locale.toString() == "ar"
+              //         ? Icons.arrow_forward_ios_rounded
+              //         : Icons.arrow_back_ios_new_rounded,
+              //     color: primaryColor,
+              //   ),
+              // ),
             ),
-            titleSpacing: 0,
-            leading: IconButton(
-                onPressed: () {
-                  goto(
-                    child: homeScreen(),
-                    type: PageTransitionType.fade,
-                    context: context,
-                  );
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: primaryColor,
-                )),
-          ),
-          body: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            children: [
-              settingItemBuider(
-                leadingIcon: Icons.wb_sunny,
-                text: 'Change Application Mood',
-                trailingIcon: null,
-                child: Switch(
-                    activeColor: primaryColor,
-                    value: isDark,
-                    onChanged: (bool value) {
-                      cubit.changeAppMood(context: context, val: value);
+            body: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              children: [
+                settingItemBuider(
+                  leadingIcon: Icons.wb_sunny,
+                  text: LocaleKeys.Change_Application_Mood.tr(),
+                  trailingIcon: null,
+                  child: Switch(
+                      activeColor: primaryColor,
+                      value: isDark,
+                      onChanged: (bool value) {
+                        cubit.changeAppMood(context: context, val: value);
+                      }),
+                  function: () {},
+                ),
+                settingItemBuider(
+                  leadingIcon: Icons.language,
+                  text: LocaleKeys.Change_Application_Language.tr(),
+                  trailingIcon: null,
+                  child: PopupMenuButton(
+                      padding: const EdgeInsets.all(0),
+                      shape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: BorderSide(
+                          color: secondaryColor,
+                        ),
+                      ),
+                      color: primaryColor,
+                      icon: Icon(
+                        Icons.spellcheck_outlined,
+                        color: primaryColor,
+                      ),
+                      itemBuilder: (ctx) {
+                        return [
+                          PopupMenuItem(
+                            onTap: () {
+                              // convert to arab language
+                              cubit.changeAppLanguage(
+                                context: ctx,
+                                val: Locale('ar'),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                Image(
+                                  image: AssetImage('assets/images/arab.png'),
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                const SizedBox(width: 10),
+                                Text('Arabic Language'),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            onTap: () {
+                              // convert to english
+                              cubit.changeAppLanguage(
+                                context: ctx,
+                                val: Locale('en'),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                Image(
+                                  image: AssetImage('assets/images/eng.png'),
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                const SizedBox(width: 10),
+                                Text('English Language'),
+                              ],
+                            ),
+                          ),
+                        ];
+                      }),
+                  function: () {},
+                ),
+                settingItemBuider(
+                    leadingIcon: Icons.color_lens,
+                    text: LocaleKeys.Change_Application_Colors.tr(),
+                    trailingIcon: Icons.colorize,
+                    function: () {
+                      cubit.changeAppColors(context: context);
                     }),
-                function: () {
-                  // cubit.changeAppMood(context: context);
-                },
-              ),
-              settingItemBuider(
-                leadingIcon: Icons.language,
-                text: 'Change Application Language',
-                trailingIcon: Icons.spellcheck_outlined,
-                function: () {},
-              ),
-              settingItemBuider(
-                  leadingIcon: Icons.color_lens,
-                  text: 'Change Application Colors',
-                  trailingIcon: Icons.colorize,
+                settingItemBuider(
+                  leadingIcon: Icons.person,
+                  text: LocaleKeys.Change_user_Data.tr(),
+                  trailingIcon: Icons.edit,
                   function: () {
-                    cubit.changeAppColors(context: context);
-                  }),
-              settingItemBuider(
-                leadingIcon: Icons.person,
-                text: 'Change user Data',
-                trailingIcon: Icons.edit,
-                function: () {
-                  goto(
-                    child: profileScreen(),
-                    type: PageTransitionType.fade,
-                    context: context,
-                  );
-                },
-              ),
-              settingItemBuider(
-                leadingIcon: Icons.info,
-                text: 'Contact us',
-                trailingIcon: Icons.assignment_ind,
-                function: () {
-                  goto(
-                    child: contactUs(),
-                    type: PageTransitionType.fade,
-                    context: context,
-                  );
-                },
-              ),
-              settingItemBuider(
-                leadingIcon: Icons.logout,
-                text: 'Logout',
-                trailingIcon: Icons.exit_to_app,
-                function: () {
-                  sharedPrefrences.clearData().then((value) {
-                    userToken = "";
-                    tokenDate = 0;
-                    userCubit.get(context).pickedImage = null;
-                    userCubit.get(context).image = null;
-                    userCubit.get(context).disappearSplachScreen();
                     goto(
-                      child: splashScreen(),
+                      child: profileScreen(),
                       type: PageTransitionType.fade,
                       context: context,
                     );
-                  });
-                },
-              ),
-            ],
+                  },
+                ),
+                settingItemBuider(
+                  leadingIcon: Icons.info,
+                  text: LocaleKeys.Contact_us.tr(),
+                  trailingIcon: Icons.assignment_ind,
+                  function: () {
+                    goto(
+                      child: contactUs(),
+                      type: PageTransitionType.fade,
+                      context: context,
+                    );
+                  },
+                ),
+                settingItemBuider(
+                  leadingIcon: Icons.logout,
+                  text: LocaleKeys.Logout.tr(),
+                  trailingIcon: Icons.exit_to_app,
+                  function: () {
+                    sharedPrefrences.clearData().then((value) {
+                      userToken = "";
+                      tokenDate = 0;
+                      userCubit.get(context).pickedImage = null;
+                      userCubit.get(context).image = null;
+                      userCubit.get(context).disappearSplachScreen();
+                      goto(
+                        child: splashScreen(),
+                        type: PageTransitionType.fade,
+                        context: context,
+                      );
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },

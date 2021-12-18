@@ -1,0 +1,45 @@
+{
+
+    "Welcome to Online Shop":"Welcome to Online Shop",
+    "Register Your Account and discover our Products":"Register Your Account and discover our Products",
+    "User Name":"User Name",
+    "Email":"Email",
+    "Password":"Password",
+    "Phone Number":"Phone Number",
+    "Register":"Register",
+    "Already Have An Account ?!":"Already Have An Account ?!",
+    "Login":"Login",
+    "Please Select Your Image":"Please Select Your Image",
+    "'Please check Your internet !!!":"'Please check Your internet !!!",
+    "Login with Your Account and discover our Products":"Login with Your Account and discover our Products",
+     "Invalid user Name":"Invalid user Name",
+     "Invalid email":"Invalid email",
+     "Weak password ,  must be at least 8 characters":"Weak password ,  must be at least 8 characters",   
+     "Invalid Phone Number":"Invalid Phone Number",   
+     "Home":"Home",
+    "Categories":"Categories",
+    "Products":"Products",
+    "Welcome":"Welcome",  
+    "Home Screen":"Home Screen",
+    "Loading...":"Loading...",
+    "Categories Screen":"Categories Screen",  
+    "Favorites Screen":"Favorites Screen",  
+    "Shopping cart Screen":"Shopping cart Screen",
+    "Rating Screen":"Rating Screen",  
+    "Settings Screen":"Settings Screen",
+    "Search":"Search",
+    "Filters":"Filters",  
+
+
+
+
+    "Settings":"Settings",
+
+    "Change Application Mood":"Change Application Mood",
+    "Change Application Language":"Change Application Language",
+    "Change Application Colors":"Change Application Colors",
+    "Change user Data":"Change user Data",
+    "Contact us":"Contact us",
+    "Logout":"Logout"
+
+}

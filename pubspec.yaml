@@ -48,6 +48,7 @@ dependencies:
   progress_indicators: ^1.0.0
   flutter_colorpicker: ^1.0.2
   flutter_rating_bar: ^4.0.0
+  easy_localization: ^3.0.0
   
 
 
@@ -81,6 +82,7 @@ flutter:
   assets:
     - assets/images/
     - assets/banners/
+    - assets/translations/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

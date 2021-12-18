@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_node/app_screens/home_screen.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_node/shared/app_cubit/cubit.dart';
 import 'package:flutter_node/shared/app_cubit/cubit_states.dart';
 import 'package:flutter_node/shared/constants.dart';
 import 'package:flutter_node/shared/styles.dart';
+import 'package:flutter_node/translations/local_keys.dart';
 import 'package:page_transition/page_transition.dart';
 
 class filterScreen extends StatefulWidget {
@@ -61,174 +63,185 @@ class _filterScreenState extends State<filterScreen> {
         return SafeArea(
           bottom: true,
           top: true,
-          child: Scaffold(
-            backgroundColor: secondaryColor,
-            appBar: AppBar(
-              elevation: 0,
+          child: WillPopScope(
+            onWillPop: () async {
+              goto(
+                child: homeScreen(),
+                type: PageTransitionType.fade,
+                context: context,
+              );
+              return true;
+            },
+            child: Scaffold(
               backgroundColor: secondaryColor,
-              title: Text(
-                'Filters',
-                style: TextStyle(color: primaryColor),
+              appBar: AppBar(
+                elevation: 0,
+                backgroundColor: secondaryColor,
+                title: Text(
+                  LocaleKeys.Filters.tr(),
+                  style: TextStyle(color: primaryColor),
+                ),
+                titleSpacing: 10,
+                // leading: IconButton(
+                //     onPressed: () {
+                //       goto(
+                //         child: homeScreen(),
+                //         type: PageTransitionType.fade,
+                //         context: context,
+                //       );
+                //     },
+                //     icon: Icon(
+                //       Icons.arrow_back_ios_new,
+                //       color: primaryColor,
+                //     )),
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        cubit.resetFilters();
+                      },
+                      icon: Icon(
+                        Icons.restart_alt,
+                        color: primaryColor,
+                      )),
+                ],
               ),
-              titleSpacing: 0,
-              leading: IconButton(
-                  onPressed: () {
-                    goto(
-                      child: homeScreen(),
-                      type: PageTransitionType.fade,
-                      context: context,
-                    );
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_new,
-                    color: primaryColor,
-                  )),
-              actions: [
-                IconButton(
-                    onPressed: () {
-                      cubit.resetFilters();
-                    },
-                    icon: Icon(
-                      Icons.restart_alt,
-                      color: primaryColor,
-                    )),
-              ],
-            ),
-            body: ListView(
-              children: [
-                filterTitle(title: 'Filter By Category'),
-                filterIntro(
-                    text: 'Here You can Filter products by Categories  :'),
-                Wrap(
-                    alignment: WrapAlignment.spaceAround,
-                    spacing: 10,
-                    children: cubit.cat_Modal!.data.map((item) {
-                      return wrapItem(
-                          text: item.title.toString(),
-                          clr: cubit.categories.contains(item.title.toString())
-                              ? Colors.green
-                              : secondaryColor,
-                          func: () {
-                            if (cubit.categories.contains(item.title)) {
-                              setState(() {
-                                cubit.categories
-                                    .remove(item.title.toString().trim());
-                              });
-                            } else {
-                              setState(() {
-                                cubit.categories
-                                    .add(item.title.toString().trim());
-                              });
-                            }
-                          });
-                    }).toList()),
-                const SizedBox(height: 20),
-                filterTitle(title: 'Filter By Price'),
-                filterIntro(
-                    text:
-                        'Here You can Filter products by Price , Select Min and Max Price  :'),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Min:',
-                        style: TextStyle(color: primaryColor),
-                      ),
-                      Expanded(
-                        child: Slider(
-                          activeColor: primaryColor,
-                          label: cubit.minPriceValue.toString(),
-                          value: cubit.minPriceValue,
-                          onChanged: (double val) {
-                            setState(() {
-                              cubit.minPriceValue = val;
+              body: ListView(
+                children: [
+                  filterTitle(title: 'Filter By Category'),
+                  filterIntro(
+                      text: 'Here You can Filter products by Categories  :'),
+                  Wrap(
+                      alignment: WrapAlignment.spaceAround,
+                      spacing: 10,
+                      children: cubit.cat_Modal!.data.map((item) {
+                        return wrapItem(
+                            text: item.title.toString(),
+                            clr:
+                                cubit.categories.contains(item.title.toString())
+                                    ? Colors.green
+                                    : secondaryColor,
+                            func: () {
+                              if (cubit.categories.contains(item.title)) {
+                                setState(() {
+                                  cubit.categories
+                                      .remove(item.title.toString().trim());
+                                });
+                              } else {
+                                setState(() {
+                                  cubit.categories
+                                      .add(item.title.toString().trim());
+                                });
+                              }
                             });
-                          },
-                          min: 0,
-                          max: 100,
-                          divisions: 100,
+                      }).toList()),
+                  const SizedBox(height: 20),
+                  filterTitle(title: 'Filter By Price'),
+                  filterIntro(
+                      text:
+                          'Here You can Filter products by Price , Select Min and Max Price  :'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Min:',
+                          style: TextStyle(color: primaryColor),
                         ),
-                      ),
-                      Text(
-                        cubit.minPriceValue.toString() + "\$",
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Max:',
-                        style: TextStyle(color: primaryColor),
-                      ),
-                      Expanded(
-                        child: Slider(
-                          activeColor: primaryColor,
-                          label: cubit.maxPriceValue.toString(),
-                          value: cubit.maxPriceValue,
-                          onChanged: (double val) {
-                            setState(() {
-                              cubit.maxPriceValue = val;
-                            });
-                          },
-                          min: 0,
-                          max: 100,
-                          divisions: 100,
-                        ),
-                      ),
-                      Text(
-                        cubit.maxPriceValue.toString() + '\$',
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                state is getFilteredProductsLoading
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          color: primaryColor,
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: () {
-                          cubit.getFilteredProducts(
-                            selectedPrice: cubit.maxPriceValue,
-                            minPriceValue: cubit.minPriceValue,
-                            selectedCategories: cubit.categories,
-                          );
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(16),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: primaryColor,
-                            border: Border.all(color: secondaryColor),
+                        Expanded(
+                          child: Slider(
+                            activeColor: primaryColor,
+                            label: cubit.minPriceValue.toString(),
+                            value: cubit.minPriceValue,
+                            onChanged: (double val) {
+                              setState(() {
+                                cubit.minPriceValue = val;
+                              });
+                            },
+                            min: 0,
+                            max: 100,
+                            divisions: 100,
                           ),
-                          child: Text('Save Changes',
-                              style: TextStyle(
-                                color: secondaryColor,
-                                fontSize: 18,
-                              )),
                         ),
-                      ),
-                const SizedBox(height: 20),
-              ],
+                        Text(
+                          cubit.minPriceValue.toString() + "\$",
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontSize: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Max:',
+                          style: TextStyle(color: primaryColor),
+                        ),
+                        Expanded(
+                          child: Slider(
+                            activeColor: primaryColor,
+                            label: cubit.maxPriceValue.toString(),
+                            value: cubit.maxPriceValue,
+                            onChanged: (double val) {
+                              setState(() {
+                                cubit.maxPriceValue = val;
+                              });
+                            },
+                            min: 0,
+                            max: 100,
+                            divisions: 100,
+                          ),
+                        ),
+                        Text(
+                          cubit.maxPriceValue.toString() + '\$',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontSize: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  state is getFilteredProductsLoading
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            cubit.getFilteredProducts(
+                              selectedPrice: cubit.maxPriceValue,
+                              minPriceValue: cubit.minPriceValue,
+                              selectedCategories: cubit.categories,
+                            );
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(16),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: primaryColor,
+                              border: Border.all(color: secondaryColor),
+                            ),
+                            child: Text('Save Changes',
+                                style: TextStyle(
+                                  color: secondaryColor,
+                                  fontSize: 18,
+                                )),
+                          ),
+                        ),
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
         );

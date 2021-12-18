@@ -1,7 +1,9 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_node/shared/constants.dart';
 import 'package:flutter_node/shared/styles.dart';
 import 'package:flutter_node/shared/user_cubit/cubit.dart';
+import 'package:flutter_node/translations/local_keys.dart';
 import 'package:image_picker/image_picker.dart';
 
 class topSection extends StatelessWidget {
@@ -23,7 +25,7 @@ class topSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Welcome to Online Shop',
+            LocaleKeys.Welcome_to_Online_Shop.tr(),
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -32,7 +34,7 @@ class topSection extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'Register Your Account and discover our Products',
+            LocaleKeys.Register_Your_Account_and_discover_our_Products.tr(),
             textAlign: TextAlign.start,
             style: TextStyle(
               fontSize: 18,

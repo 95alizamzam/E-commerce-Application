@@ -9,12 +9,15 @@ import 'package:flutter_node/shared/shared_prefrences/shared_prefrences.dart';
 import 'package:flutter_node/shared/styles.dart';
 import 'package:flutter_node/shared/user_cubit/cubit.dart';
 import 'package:flutter_node/shared/user_cubit/cubit_state.dart';
+import 'package:flutter_node/translations/codegen_loader.g.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await sharedPrefrences.init();
+
   // sharedPrefrences.clearData();
 
   isDark = sharedPrefrences.getData(dataType: 'Bool', key: 'isDark') ?? true;
@@ -40,7 +43,23 @@ void main() async {
       statusBarIconBrightness: Brightness.light,
     ),
   );
-  runApp(MyApp(isDark: isDark));
+  runApp(
+    EasyLocalization(
+      supportedLocales: [
+        Locale('en'),
+        Locale('ar'),
+      ],
+      path: 'assets/translations',
+      fallbackLocale: Locale('en'),
+      assetLoader: CodegenLoader(),
+      errorWidget: (error) {
+        return ErrorWidget(
+          new Exception('Sorry, We can\'t Change The language now'),
+        );
+      },
+      child: MyApp(isDark: isDark),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -68,6 +87,10 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Flutter Demo',
             theme: ThemeData(),
+            // for Easy localization package
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
             home: splashScreen(),
           );
         },

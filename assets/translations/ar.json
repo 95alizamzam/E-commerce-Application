@@ -1,0 +1,56 @@
+{
+    "Welcome to Online Shop":"أهلا وسهلا بك في التطبيق ",
+    "Register Your Account and discover our Products":"سجل حساب جديد واكتشف منتجاتنا",
+    "User Name":"اسم المستخدم ",
+    "Email":"الإيميل",
+    "Password":"كلمة المرور",
+    "Phone Number":"رقم الهاتف",
+    "Register":"تسجيل",
+    "Already Have An Account ?!":"هل لديك حساب بالفعل ؟؟",
+    "Login":"تسجيل دخول",
+    "Please Select Your Image":"الرجاء اختيار صورة شخصية",
+    "'Please check Your internet !!!":"'الرجاء التحقق من الاتصال بالانترنيت",
+    "Login with Your Account and discover our Products":"سجل دخول عبر حسابك واكتشف منتجاتنا",
+    "Invalid user Name":"إسم المستخدم خاطئ", 
+    "Invalid email":"أيميل خاطئ",
+    "Weak password ,  must be at least 8 characters":"باسوورد ضعيفة , يجب ان تكون على الاقل 8 محارف",   
+    "Invalid Phone Number":"رقم الهاتف خاطئ",   
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+    "Home":"الرئيسية",
+    "Categories":"الاصناف",
+    "Products":"المنتجات",
+    "Home Screen":" الرئيسية",
+    "Welcome":"أهلا بك ",  
+    "Loading...":"...جاري التحميل ",
+    "Categories Screen":" التصنيفات",  
+    "Favorites Screen":" المنتجات المفضلة",  
+    "Shopping cart Screen":" بطاقة التسوق",
+    "Rating Screen":" التقييمات",  
+    "Settings Screen":"الاعدادات",  
+    "Settings":"الإعدادات",
+    "Change Application Mood":"تغيير مود التطبيق",
+    "Change Application Language":"تغيير لغة التطبيق",
+    "Change Application Colors":"تغيير الوان التطبيق",
+    "Change user Data":"تعديل بيانات المستخدم",
+    "Contact us":"إتصل بنا",
+    "Logout":"تسجيل الخروج",
+    "Search":"البحث",
+    "Filters":"الفلاتر"  
+
+
+
+
+}

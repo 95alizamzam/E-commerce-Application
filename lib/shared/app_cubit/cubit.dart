@@ -16,6 +16,7 @@ import 'package:flutter_node/shared/shared_prefrences/shared_prefrences.dart';
 import 'package:flutter_node/shared/styles.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
+import 'package:easy_localization/easy_localization.dart';
 
 class appCubit extends Cubit<appCubitStates> {
   appCubit() : super(appinitalState());
@@ -461,5 +462,16 @@ class appCubit extends Cubit<appCubitStates> {
     required int quantity,
   }) {
     return price * quantity;
+  }
+
+  void changeAppLanguage({
+    required BuildContext context,
+    required Locale val,
+  }) {
+    context.setLocale(val).then((value) {
+      emit(changeLanguageSuccessfully());
+    }).catchError((err) {
+      print('Error with Translation Process');
+    });
   }
 }

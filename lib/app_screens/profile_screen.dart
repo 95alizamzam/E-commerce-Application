@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_node/app_screens/settings_screen.dart';
@@ -10,6 +12,7 @@ import 'package:page_transition/page_transition.dart';
 
 class profileScreen extends StatelessWidget {
   profileScreen({Key? key}) : super(key: key);
+
   final formKey = GlobalKey<FormState>();
   final userNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -18,11 +21,21 @@ class profileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userData = userCubit.get(context);
-    final data = userData.userObject;
     return BlocConsumer<userCubit, userCubitStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is updateUserDataDone) {
+          userCubit.get(context).getUserData();
+        }
+      },
       builder: (context, state) {
+        final usercubit = userCubit.get(context);
+        final data = usercubit.userObject;
+        Map<String, dynamic> userData = {
+          "userName": data!.userName.toString(),
+          "userEmail": data.userEmail.toString(),
+          "userPhone": data.userPhoneNumber.toString(),
+          "userImage": data.userImage.toString()
+        };
         return Scaffold(
           backgroundColor: secondaryColor,
           appBar: AppBar(
@@ -48,67 +61,65 @@ class profileScreen extends StatelessWidget {
           ),
           body: ListView(
             children: [
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (_) {
-                            return AlertDialog(
-                              title: Text('Update Your photo'),
-                              content: Container(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        userData.pickUserImage(
-                                            src: ImageSource.gallery);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.image,
-                                            color: primaryColor,
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Text('From Gallery'),
-                                        ],
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          title: Text('Update Your photo'),
+                          content: Container(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    usercubit.pickUserImage(
+                                        src: ImageSource.gallery);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.image,
+                                        color: primaryColor,
                                       ),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    GestureDetector(
-                                      onTap: () {
-                                        userData.pickUserImage(
-                                            src: ImageSource.camera);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.camera,
-                                            color: primaryColor,
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Text('From Camera'),
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                      const SizedBox(width: 10),
+                                      Text('From Gallery'),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          });
-                    },
-                    child: CircleAvatar(
-                      radius: 75,
-                      backgroundImage: NetworkImage(
-                        data!.userImage.toString(),
-                      ),
-                    ),
+                                const SizedBox(height: 20),
+                                GestureDetector(
+                                  onTap: () {
+                                    usercubit.pickUserImage(
+                                        src: ImageSource.camera);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.camera,
+                                        color: primaryColor,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text('From Camera'),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: Image(
+                    image: NetworkImage(userData['userImage']),
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height / 2,
+                    fit: BoxFit.cover,
                   ),
-                ],
+                ),
               ),
               Form(
                 key: formKey,
@@ -128,9 +139,8 @@ class profileScreen extends StatelessWidget {
                         ),
                       ),
                       itemBuilder(
+                        hint: 'userName : ' + userData['userName'],
                         type: TextInputType.name,
-                        label: 'user Name :',
-                        hint: data.userName.toString(),
                         con: userNameController,
                         validate: (String value) {
                           if (value.isEmpty || value.length < 6) {
@@ -140,9 +150,8 @@ class profileScreen extends StatelessWidget {
                         },
                       ),
                       itemBuilder(
+                          hint: 'userEmail :' + userData['userEmail'],
                           type: TextInputType.emailAddress,
-                          label: 'email  :',
-                          hint: data.userEmail.toString(),
                           con: emailController,
                           validate: (String value) {
                             if (value.isEmpty ||
@@ -154,9 +163,8 @@ class profileScreen extends StatelessWidget {
                             }
                           }),
                       itemBuilder(
+                          hint: 'userPhone : ' + userData['userPhone'],
                           type: TextInputType.number,
-                          label: 'phone Number  :',
-                          hint: data.userPhoneNumber.toString(),
                           con: phoneController,
                           validate: (String value) {
                             if (value.isEmpty || value.length < 8) {
@@ -165,9 +173,8 @@ class profileScreen extends StatelessWidget {
                             return null;
                           }),
                       itemBuilder(
+                          hint: "user Password : " + "********",
                           type: TextInputType.visiblePassword,
-                          label: 'password  :',
-                          hint: "*********",
                           con: passwordController,
                           validate: (String value) {
                             if (value.isEmpty || value.length < 8) {
@@ -175,6 +182,7 @@ class profileScreen extends StatelessWidget {
                             }
                             return null;
                           }),
+                      const SizedBox(height: 10),
                       state is updateUserDataLoading
                           ? Center(
                               child: CircularProgressIndicator(
@@ -186,22 +194,17 @@ class profileScreen extends StatelessWidget {
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (!formKey.currentState!.validate()) {
-                                    return;
                                   } else {
-                                    userData.updateUserData(
-                                      userId: userData.userObject!.userId
-                                          .toString(),
+                                    usercubit.updateUserData(
+                                      userId: data.userId.toString(),
                                       userName: userNameController.text,
                                       email: emailController.text,
                                       password: passwordController.text,
                                       phoneNumber: phoneController.text,
-                                      userImage: userData.image!,
+                                      userImage: usercubit.image == null
+                                          ? null
+                                          : usercubit.image,
                                     );
-
-                                    userNameController.clear();
-                                    emailController.clear();
-                                    passwordController.clear();
-                                    phoneController.clear();
                                   }
                                 },
                                 child: Text(
@@ -217,6 +220,7 @@ class profileScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),
@@ -230,7 +234,6 @@ class profileScreen extends StatelessWidget {
 }
 
 Widget itemBuilder({
-  required String label,
   required String hint,
   required TextEditingController con,
   required Function validate,
@@ -249,15 +252,22 @@ Widget itemBuilder({
       children: [
         Expanded(
           child: TextFormField(
-              style: TextStyle(color: primaryColor),
-              keyboardType: type,
-              controller: con,
-              decoration: InputDecoration(
-                hintText: "current Data : " + hint,
-                hintStyle: TextStyle(color: primaryColor),
-                border: InputBorder.none,
+            style: TextStyle(color: primaryColor),
+            keyboardType: type,
+            controller: con,
+            obscureText: type == TextInputType.visiblePassword ? true : false,
+            decoration: InputDecoration(
+              hintText: hint,
+              errorStyle: TextStyle(
+                color: Colors.red,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
               ),
-              validator: (val) => validate(val)),
+              hintStyle: TextStyle(color: primaryColor),
+              border: InputBorder.none,
+            ),
+            validator: (val) => validate(val),
+          ),
         ),
       ],
     ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -13,19 +14,29 @@ import 'package:flutter_node/shared/app_cubit/cubit_states.dart';
 import 'package:flutter_node/shared/constants.dart';
 import 'package:flutter_node/shared/styles.dart';
 import 'package:flutter_node/shared/user_cubit/cubit.dart';
+import 'package:flutter_node/translations/local_keys.dart';
 import 'package:page_transition/page_transition.dart';
 
 class appDrawer extends StatelessWidget {
-  const appDrawer({Key? key, required this.appcubit}) : super(key: key);
+  appDrawer({Key? key, required this.appcubit}) : super(key: key);
 
   final appCubit appcubit;
-  final List<Map<String, dynamic>> drawerItems = const [
-    {"leadingIcon": Icons.home, "title": "Home Screen"},
-    {"leadingIcon": Icons.grid_view_rounded, "title": "Categories Screen"},
-    {"leadingIcon": Icons.favorite_border, "title": "Favorites Screen"},
-    {"leadingIcon": Icons.shopping_cart, "title": "Shopping cart Screen"},
-    {"leadingIcon": Icons.star, "title": "Rating Screen"},
-    {"leadingIcon": Icons.settings, "title": "Settings Screen"},
+  final List<Map<String, dynamic>> drawerItems = [
+    {"leadingIcon": Icons.home, "title": LocaleKeys.Home_Screen.tr()},
+    {
+      "leadingIcon": Icons.grid_view_rounded,
+      "title": LocaleKeys.Categories_Screen.tr()
+    },
+    {
+      "leadingIcon": Icons.favorite_border,
+      "title": LocaleKeys.Favorites_Screen.tr()
+    },
+    {
+      "leadingIcon": Icons.shopping_cart,
+      "title": LocaleKeys.Shopping_cart_Screen.tr()
+    },
+    {"leadingIcon": Icons.star, "title": LocaleKeys.Rating_Screen.tr()},
+    {"leadingIcon": Icons.settings, "title": LocaleKeys.Settings.tr()},
   ];
 
   @override
@@ -52,9 +63,10 @@ class appDrawer extends StatelessWidget {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          padding: const EdgeInsets.symmetric(vertical: 18),
                           child: Text(
-                            'Welcome ' + userData.userName.toString(),
+                            LocaleKeys.Welcome.tr() +
+                                userData.userName.toString(),
                             style: TextStyle(
                               color: primaryColor,
                               fontSize: 18,

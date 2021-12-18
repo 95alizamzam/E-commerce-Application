@@ -186,7 +186,7 @@ class userCubit extends Cubit<userCubitStates> {
 
   // check expiration of token
   void checkValidToken() {
-    Future.delayed(Duration(minutes: tokenDate), () => {autoLogout()});
+    Future.delayed(Duration(hours: tokenDate), () => {autoLogout()});
   }
 
   void updateUserData({
@@ -195,7 +195,7 @@ class userCubit extends Cubit<userCubitStates> {
     required String password,
     required String phoneNumber,
     required String userId,
-    required File userImage,
+    File? userImage,
   }) async {
     emit(updateUserDataLoading());
     final request =
@@ -208,24 +208,25 @@ class userCubit extends Cubit<userCubitStates> {
     request.fields['phoneNumber'] = phoneNumber;
     request.fields['userId'] = userId;
 
-    final imageEtension = userImage.path.split('/').last.split('.').last;
-    // image File
-    final sendingImageFile = await http.MultipartFile.fromPath(
-      'userImage',
-      userImage.path,
-      filename: userImage.path.split('/').last,
-      // so important field
-      contentType: MediaType('image', imageEtension),
-    );
-    //final request with all text fields and image
-    request.files.add(sendingImageFile);
-
+    if (userImage != null) {
+      final imageEtension = userImage.path.split('/').last.split('.').last;
+      // image File
+      final sendingImageFile = await http.MultipartFile.fromPath(
+        'userImage',
+        userImage.path,
+        filename: userImage.path.split('/').last,
+        // so important field
+        contentType: MediaType('image', imageEtension),
+      );
+      //final request with all text fields and image
+      request.files.add(sendingImageFile);
+    }
     final res = await request.send();
 
     if (res.statusCode == 200) {
       emit(updateUserDataDone());
-      getUserData();
     } else {
+      print(res.statusCode);
       print('Error');
     }
   }

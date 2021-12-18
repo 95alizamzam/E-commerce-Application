@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_node/Widgets/home_screen/carousel_widget.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_node/shared/constants.dart';
 
 import 'package:flutter_node/shared/styles.dart';
+import 'package:flutter_node/translations/local_keys.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'package:progress_indicators/progress_indicators.dart';
@@ -34,7 +36,7 @@ class homeScreen extends StatelessWidget {
               elevation: 0,
               titleSpacing: 0,
               title: Text(
-                'Home Screen',
+                LocaleKeys.Home_Screen.tr(),
                 style: TextStyle(color: primaryColor),
               ),
               backgroundColor: secondaryColor,
@@ -89,7 +91,7 @@ class homeScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           carouselWidget(),
-                          intro(title: 'Categories'),
+                          intro(title: LocaleKeys.Categories.tr()),
                           categoriesShow(),
                           productsWidget(),
                         ],

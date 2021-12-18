@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_node/Widgets/home_screen/grid_shape.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_node/Widgets/home_screen/list_shape.dart';
 import 'package:flutter_node/shared/app_cubit/cubit.dart';
 import 'package:flutter_node/shared/app_cubit/cubit_states.dart';
 import 'package:flutter_node/shared/styles.dart';
+import 'package:flutter_node/translations/local_keys.dart';
 
 class productsWidget extends StatelessWidget {
   const productsWidget({Key? key}) : super(key: key);
@@ -25,7 +27,7 @@ class productsWidget extends StatelessWidget {
                     children: [
                       Expanded(
                           child: Text(
-                        'Products',
+                        LocaleKeys.Products.tr(),
                         style: TextStyle(
                           fontSize: 16,
                           color: primaryColor,
