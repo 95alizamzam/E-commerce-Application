@@ -24,13 +24,6 @@ class splashScreen extends StatelessWidget {
             context: context,
           );
         }
-        if (state is tokenExpiredState) {
-          goto(
-            child: loginScreen(),
-            type: PageTransitionType.fade,
-            context: context,
-          );
-        }
       },
       builder: (context, state) {
         return Scaffold(

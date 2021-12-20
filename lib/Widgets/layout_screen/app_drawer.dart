@@ -66,6 +66,7 @@ class appDrawer extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 18),
                           child: Text(
                             LocaleKeys.Welcome.tr() +
+                                " " +
                                 userData.userName.toString(),
                             style: TextStyle(
                               color: primaryColor,
@@ -117,6 +118,8 @@ Widget itemBuilder({
 }) {
   return Container(
     child: ListTile(
+      minLeadingWidth: 10,
+      minVerticalPadding: 2,
       leading: Icon(ico, color: primaryColor),
       title: Text(
         title,

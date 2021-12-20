@@ -39,7 +39,6 @@ class shoppingCartScreen extends StatelessWidget {
         final cubit = appCubit.get(context);
         final userId = userCubit.get(context).userObject!.userId;
 
-        final data = cubit.cartProducts!.data;
         return WillPopScope(
           onWillPop: () async {
             goto(
@@ -100,11 +99,16 @@ class shoppingCartScreen extends StatelessWidget {
                         )
                       ],
                     ))
-                : (cubit.cartProducts == null)
+                : (cubit.cartProducts == null ||
+                        cubit.cartProducts!.data.length == 0)
                     ? Center(
-                        child: Text(
-                          'Your Cart is Empty',
-                          style: TextStyle(color: primaryColor, fontSize: 20),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: Text(
+                            'Your Cart is Empty, Please discover our Products and add them to your cart',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: primaryColor, fontSize: 20),
+                          ),
                         ),
                       )
                     : Container(
@@ -115,17 +119,21 @@ class shoppingCartScreen extends StatelessWidget {
                               flex: 3,
                               child: Container(
                                 child: ListView.separated(
-                                  itemBuilder: (_, index) => itemBuilder(
-                                    pId: data[index].id!,
-                                    productName: data[index].title!,
-                                    productDescreption:
-                                        data[index].descreption!,
-                                    productPrice: data[index].price.toString(),
-                                    image: data[index].image!,
-                                    cartId: cubit.cartObject!.cartId.toString(),
-                                    cubit: cubit,
-                                    productQuantity: data[index].quantity!,
-                                  ),
+                                  itemBuilder: (_, index) {
+                                    final data =
+                                        cubit.cartProducts!.data[index];
+                                    return itemBuilder(
+                                      pId: data.id!,
+                                      productName: data.title!,
+                                      productDescreption: data.descreption!,
+                                      productPrice: data.price.toString(),
+                                      image: data.image!,
+                                      cartId:
+                                          cubit.cartObject!.cartId.toString(),
+                                      cubit: cubit,
+                                      productQuantity: data.quantity!,
+                                    );
+                                  },
                                   separatorBuilder: (_, index) =>
                                       const SizedBox(height: 10),
                                   itemCount: cubit.cartProducts!.data.length,

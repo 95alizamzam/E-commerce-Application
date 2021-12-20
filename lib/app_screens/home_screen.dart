@@ -14,6 +14,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_node/shared/constants.dart';
 
 import 'package:flutter_node/shared/styles.dart';
+import 'package:flutter_node/shared/user_cubit/cubit.dart';
+import 'package:flutter_node/shared/user_cubit/cubit_state.dart';
 import 'package:flutter_node/translations/local_keys.dart';
 import 'package:page_transition/page_transition.dart';
 

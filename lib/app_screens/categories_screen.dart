@@ -21,42 +21,41 @@ class categoriesScreen extends StatelessWidget {
         return SafeArea(
           top: true,
           bottom: true,
-          child: Scaffold(
-            backgroundColor: secondaryColor,
-            appBar: AppBar(
-              elevation: 0,
-              titleSpacing: 0,
-              title: Text('Categories', style: TextStyle(color: primaryColor)),
-              backgroundColor: secondaryColor,
-              leading: InkWell(
-                onTap: () {
-                  goto(
-                      child: homeScreen(),
-                      type: PageTransitionType.fade,
-                      context: context);
-                },
-                child: Icon(
-                  Icons.arrow_back_ios_new_outlined,
-                  color: primaryColor,
-                ),
-              ),
-            ),
-            body: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-              itemBuilder: (_, index) => catItemBuilder(
-                catId: data[index].id.toString(),
-                imageUrl: data[index].image!,
-                title: data[index].title!,
-                subtitle: data[index].descreption!,
+          child: WillPopScope(
+            onWillPop: () async {
+              goto(
+                child: homeScreen(),
+                type: PageTransitionType.fade,
                 context: context,
-                cubit: cubit,
+              );
+              return true;
+            },
+            child: Scaffold(
+              backgroundColor: secondaryColor,
+              appBar: AppBar(
+                elevation: 0,
+                titleSpacing: 10,
+                title:
+                    Text('Categories', style: TextStyle(color: primaryColor)),
+                backgroundColor: secondaryColor,
               ),
-              separatorBuilder: (_, index) => Divider(
-                color: primaryColor,
-                endIndent: 10,
-                indent: 10,
+              body: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                itemBuilder: (_, index) => catItemBuilder(
+                  catId: data[index].id.toString(),
+                  imageUrl: data[index].image!,
+                  title: data[index].title!,
+                  subtitle: data[index].descreption!,
+                  context: context,
+                  cubit: cubit,
+                ),
+                separatorBuilder: (_, index) => Divider(
+                  color: primaryColor,
+                  endIndent: 10,
+                  indent: 10,
+                ),
+                itemCount: data.length,
               ),
-              itemCount: data.length,
             ),
           ),
         );

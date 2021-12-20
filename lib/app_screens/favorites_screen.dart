@@ -18,67 +18,66 @@ class favoriteScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           final cubit = appCubit.get(context);
-          final usercubit = userCubit.get(context);
-
-          final userId = usercubit.userObject!.userId;
-          return Scaffold(
-            backgroundColor: secondaryColor,
-            appBar: AppBar(
-              elevation: 0,
-              titleSpacing: 0,
+          final userId = userCubit.get(context).userObject!.userId;
+          return WillPopScope(
+            onWillPop: () async {
+              goto(
+                  child: homeScreen(),
+                  type: PageTransitionType.fade,
+                  context: context);
+              return true;
+            },
+            child: Scaffold(
               backgroundColor: secondaryColor,
-              title: Text(
-                'Favorites Products',
-                style: TextStyle(color: primaryColor),
+              appBar: AppBar(
+                elevation: 0,
+                titleSpacing: 10,
+                backgroundColor: secondaryColor,
+                title: Text(
+                  'Favorites Products',
+                  style: TextStyle(color: primaryColor),
+                ),
               ),
-              leading: InkWell(
-                onTap: () {
-                  goto(
-                      child: homeScreen(),
-                      type: PageTransitionType.fade,
-                      context: context);
-                },
-                child: Icon(Icons.arrow_back_ios_new, color: primaryColor),
-              ),
-            ),
-            body: (cubit.favProducts == null)
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: primaryColor,
-                    ),
-                  )
-                : (cubit.favProducts!.data.length == 0)
-                    ? Center(
-                        child: Text(
-                          'You Doesn\'t Have Any Favorite Items',
-                          style: TextStyle(
-                            color: primaryColor,
+              body: (cubit.favProducts == null)
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: primaryColor,
+                      ),
+                    )
+                  : (cubit.favProducts!.data.length == 0)
+                      ? Center(
+                          child: Text(
+                            'You Doesn\'t Have Any Favorite Items',
+                            style: TextStyle(
+                              color: primaryColor,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.all(10),
+                          child: ListView.separated(
+                            itemBuilder: (_, index) {
+                              return favItemBuilder(
+                                pId: cubit.favProducts!.data[index].id!,
+                                imageUrl: cubit.favProducts!.data[index].image!,
+                                title: cubit.favProducts!.data[index].title!,
+                                Descreption:
+                                    cubit.favProducts!.data[index].descreption!,
+                                price: cubit.favProducts!.data[index].price
+                                    .toString(),
+                                Quantity: cubit
+                                    .favProducts!.data[index].quantity
+                                    .toString(),
+                                cubit: cubit,
+                                uId: userId.toString(),
+                              );
+                            },
+                            separatorBuilder: (_, index) =>
+                                Divider(color: primaryColor),
+                            itemCount: cubit.favProducts!.data.length,
                           ),
                         ),
-                      )
-                    : Container(
-                        padding: const EdgeInsets.all(10),
-                        child: ListView.separated(
-                          itemBuilder: (_, index) {
-                            return favItemBuilder(
-                              pId: cubit.favProducts!.data[index].id!,
-                              imageUrl: cubit.favProducts!.data[index].image!,
-                              title: cubit.favProducts!.data[index].title!,
-                              Descreption:
-                                  cubit.favProducts!.data[index].descreption!,
-                              price: cubit.favProducts!.data[index].price
-                                  .toString(),
-                              Quantity: cubit.favProducts!.data[index].quantity
-                                  .toString(),
-                              cubit: cubit,
-                              uId: userId.toString(),
-                            );
-                          },
-                          separatorBuilder: (_, index) =>
-                              Divider(color: primaryColor),
-                          itemCount: cubit.favProducts!.data.length,
-                        ),
-                      ),
+            ),
           );
         },
       ),

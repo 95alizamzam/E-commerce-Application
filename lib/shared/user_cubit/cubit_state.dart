@@ -2,7 +2,7 @@ abstract class userCubitStates {}
 
 class userinitialState extends userCubitStates {}
 
-class tokenExpiredState extends userCubitStates {}
+// class tokenExpiredState extends userCubitStates {}
 
 class hiddenSplachScreen extends userCubitStates {}
 
@@ -29,7 +29,7 @@ class getUserDataSuccessfully extends userCubitStates {}
 
 class getUserDataFailed extends userCubitStates {}
 
-class autoLogoutState extends userCubitStates {}
+// class autoLogoutState extends userCubitStates {}
 
 class loginStateFailed extends userCubitStates {
   final errorMsg;

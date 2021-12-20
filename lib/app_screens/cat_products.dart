@@ -27,52 +27,51 @@ class catProducts extends StatelessWidget {
             );
           } else {
             final myProducts = cubit.catProducts!.data;
-            return Scaffold(
-              appBar: AppBar(
-                elevation: 0,
-                titleSpacing: 0,
-                title: Text(
-                  'Category Products',
-                  style: TextStyle(color: primaryColor),
-                ),
-                backgroundColor: secondaryColor,
-                leading: InkWell(
-                  onTap: () {
-                    if (fromHome == true && fromHome != null) {
-                      goto(
-                        child: homeScreen(),
-                        type: PageTransitionType.fade,
-                        context: context,
-                      );
-                    } else {
-                      goto(
-                        child: categoriesScreen(),
-                        type: PageTransitionType.fade,
-                        context: context,
-                      );
-                    }
-                  },
-                  child: Icon(Icons.arrow_back_ios_new_outlined,
-                      color: primaryColor),
-                ),
-              ),
-              body: Container(
-                color: secondaryColor,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                child: ListView.separated(
-                  itemBuilder: (_, index) => productBuilder(
-                    pId: myProducts[index].id!,
-                    imageUrl: myProducts[index].image!,
-                    title: myProducts[index].title!,
-                    Descreption: myProducts[index].descreption!,
-                    price: myProducts[index].price.toString(),
-                    Quantity: myProducts[index].quantity.toString(),
+            return WillPopScope(
+              onWillPop: () async {
+                if (fromHome == true && fromHome != null) {
+                  goto(
+                    child: homeScreen(),
+                    type: PageTransitionType.fade,
                     context: context,
+                  );
+                } else {
+                  goto(
+                    child: categoriesScreen(),
+                    type: PageTransitionType.fade,
+                    context: context,
+                  );
+                }
+                return true;
+              },
+              child: Scaffold(
+                appBar: AppBar(
+                  elevation: 0,
+                  titleSpacing: 10,
+                  title: Text(
+                    'Category Products',
+                    style: TextStyle(color: primaryColor),
                   ),
-                  separatorBuilder: (_, index) =>
-                      const Divider(color: Colors.green),
-                  itemCount: myProducts.length,
+                  backgroundColor: secondaryColor,
+                ),
+                body: Container(
+                  color: secondaryColor,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: ListView.separated(
+                    itemBuilder: (_, index) => productBuilder(
+                      pId: myProducts[index].id!,
+                      imageUrl: myProducts[index].image!,
+                      title: myProducts[index].title!,
+                      Descreption: myProducts[index].descreption!,
+                      price: myProducts[index].price.toString(),
+                      Quantity: myProducts[index].quantity.toString(),
+                      context: context,
+                    ),
+                    separatorBuilder: (_, index) =>
+                        const Divider(color: Colors.green),
+                    itemCount: myProducts.length,
+                  ),
                 ),
               ),
             );
@@ -111,21 +110,6 @@ Widget productBuilder({
           ],
         ),
       ),
-      TextButton(
-          onPressed: () {
-            goto(
-              child: productDetails(
-                productId: pId,
-                fromHome: false,
-              ),
-              type: PageTransitionType.bottomToTop,
-              context: context,
-            );
-          },
-          child: Text(
-            'Details',
-            style: TextStyle(color: primaryColor),
-          ))
     ],
   );
 }

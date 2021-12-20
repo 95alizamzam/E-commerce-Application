@@ -161,8 +161,6 @@ class productDetails extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  // body
                   SliverList(
                     delegate: SliverChildListDelegate(
                       [

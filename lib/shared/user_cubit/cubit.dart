@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_node/models/user_modal.dart';
 import 'package:flutter_node/shared/constants.dart';
@@ -13,7 +12,6 @@ import 'package:flutter_node/shared/user_cubit/cubit_state.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class userCubit extends Cubit<userCubitStates> {
   userCubit() : super(userinitialState());
@@ -168,12 +166,9 @@ class userCubit extends Cubit<userCubitStates> {
   // get user data
   userModal? userObject;
   void getUserData() {
-    checkValidToken();
     http.post(Uri.parse(basicUrl + '/user'), body: {"token": userToken}).then(
         (value) {
-      if (value.statusCode == 402) {
-        emit(tokenExpiredState());
-      } else if (value.statusCode == 409) {
+      if (value.statusCode == 409) {
         emit(getUserDataFailed());
       } else {
         userObject = userModal.fromJson(json.decode(value.body));
@@ -185,9 +180,9 @@ class userCubit extends Cubit<userCubitStates> {
   }
 
   // check expiration of token
-  void checkValidToken() {
-    Future.delayed(Duration(hours: tokenDate), () => {autoLogout()});
-  }
+  // void checkValidToken() {
+  //   Future.delayed(Duration(hours: tokenDate), () => {autoLogout()});
+  // }
 
   void updateUserData({
     required String userName,
@@ -232,13 +227,13 @@ class userCubit extends Cubit<userCubitStates> {
   }
 
   // auto logout when token is expired
-  void autoLogout() async {
-    userToken = "";
-    tokenDate = 0;
-    sharedPrefrences.deleteFields(Key: 'tokenDate').then((value) {
-      sharedPrefrences.deleteFields(Key: 'storedToken').then((value) {
-        emit(autoLogoutState());
-      });
-    });
-  }
+  // void autoLogout() async {
+  //   userToken = "";
+  //   tokenDate = 0;
+  //   sharedPrefrences.deleteFields(Key: 'tokenDate').then((value) {
+  //     sharedPrefrences.deleteFields(Key: 'storedToken').then((value) {
+  //       emit(autoLogoutState());
+  //     });
+  //   });
+  // }
 }
