@@ -11,6 +11,6 @@ void goto({
       child: child, type: type, duration: const Duration(milliseconds: 600)));
 }
 
-String basicUrl = 'http://192.168.1.6:3000';
+String basicUrl = 'http://192.168.1.3:3000';
 String userToken = '';
 int tokenDate = 0;

@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_node/app_screens/home_screen.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_node/shared/app_cubit/cubit.dart';
 import 'package:flutter_node/shared/app_cubit/cubit_states.dart';
 import 'package:flutter_node/shared/constants.dart';
 import 'package:flutter_node/shared/styles.dart';
+import 'package:flutter_node/translations/local_keys.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ratingScreen extends StatelessWidget {
@@ -16,69 +18,66 @@ class ratingScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         final cubit = appCubit.get(context);
-        return Scaffold(
-          backgroundColor: secondaryColor,
-          appBar: AppBar(
+        return WillPopScope(
+          onWillPop: () async {
+            goto(
+              child: homeScreen(),
+              type: PageTransitionType.fade,
+              context: context,
+            );
+            return false;
+          },
+          child: Scaffold(
             backgroundColor: secondaryColor,
-            elevation: 0,
-            titleSpacing: 0,
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios_new_outlined,
-                color: primaryColor,
+            appBar: AppBar(
+              backgroundColor: secondaryColor,
+              elevation: 0,
+              titleSpacing: 10,
+              title: Text(
+                LocaleKeys.Rating_Screen.tr(),
+                style: TextStyle(color: primaryColor),
               ),
-              onPressed: () {
-                goto(
-                  child: homeScreen(),
-                  type: PageTransitionType.fade,
-                  context: context,
-                );
-              },
             ),
-            title: Text(
-              'Rating Screen',
-              style: TextStyle(color: primaryColor),
-            ),
-          ),
-          body: cubit.ratedProducts == null
-              ? Center(
-                  child: CircularProgressIndicator(
-                    color: primaryColor,
-                  ),
-                )
-              : cubit.ratedProducts!.data.length == 0
-                  ? Center(
-                      child: Text(
-                        'You didn\'t Rate Any Product Yet',
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 20,
-                        ),
-                      ),
-                    )
-                  : ListView.separated(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      itemBuilder: (_, index) {
-                        final product = cubit.product_Modal!.data.firstWhere(
-                            (element) =>
-                                element.id ==
-                                cubit.ratedProducts!.data[index].productId);
-                        return ratedItemBilder(
-                          productId: product.id!,
-                          cubit: cubit,
-                          userId: cubit.ratedProducts!.data[index].userId!,
-                          image: product.image.toString(),
-                          title: product.title.toString(),
-                          subtitle: product.descreption.toString(),
-                          rating: cubit.ratedProducts!.data[index].ratingValue
-                              .toString(),
-                          context: context,
-                        );
-                      },
-                      separatorBuilder: (_, index) =>
-                          const SizedBox(height: 10),
-                      itemCount: cubit.ratedProducts!.data.length,
+            body: cubit.ratedProducts == null
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: primaryColor,
                     ),
+                  )
+                : cubit.ratedProducts!.data.length == 0
+                    ? Center(
+                        child: Text(
+                          'You didn\'t Rate Any Product Yet',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontSize: 20,
+                          ),
+                        ),
+                      )
+                    : ListView.separated(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        itemBuilder: (_, index) {
+                          final product = cubit.product_Modal!.data.firstWhere(
+                              (element) =>
+                                  element.id ==
+                                  cubit.ratedProducts!.data[index].productId);
+                          return ratedItemBilder(
+                            productId: product.id!,
+                            cubit: cubit,
+                            userId: cubit.ratedProducts!.data[index].userId!,
+                            image: product.image.toString(),
+                            title: product.title.toString(),
+                            subtitle: product.descreption.toString(),
+                            rating: cubit.ratedProducts!.data[index].ratingValue
+                                .toString(),
+                            context: context,
+                          );
+                        },
+                        separatorBuilder: (_, index) =>
+                            const SizedBox(height: 10),
+                        itemCount: cubit.ratedProducts!.data.length,
+                      ),
+          ),
         );
       },
     );

@@ -76,3 +76,5 @@ class RateNewProductDoneSuccessfully extends appCubitStates {}
 class FetchRatingsProductsSuccess extends appCubitStates {}
 
 class changeLanguageSuccessfully extends appCubitStates {}
+
+class RateTheProductSuccessfully extends appCubitStates {}

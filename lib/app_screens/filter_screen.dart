@@ -82,18 +82,6 @@ class _filterScreenState extends State<filterScreen> {
                   style: TextStyle(color: primaryColor),
                 ),
                 titleSpacing: 10,
-                // leading: IconButton(
-                //     onPressed: () {
-                //       goto(
-                //         child: homeScreen(),
-                //         type: PageTransitionType.fade,
-                //         context: context,
-                //       );
-                //     },
-                //     icon: Icon(
-                //       Icons.arrow_back_ios_new,
-                //       color: primaryColor,
-                //     )),
                 actions: [
                   IconButton(
                       onPressed: () {

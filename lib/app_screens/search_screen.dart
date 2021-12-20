@@ -46,20 +46,6 @@ class searchScreen extends StatelessWidget {
               backgroundColor: secondaryColor,
               elevation: 0,
               titleSpacing: 10,
-              // leading: IconButton(
-              //   icon: Icon(
-              //     Icons.arrow_back_ios_new_outlined,
-              //     color: primaryColor,
-              //   ),
-              //   onPressed: () {
-              //     cubit.searchedProducts!.data = [];
-              //     goto(
-              //       child: homeScreen(),
-              //       type: PageTransitionType.fade,
-              //       context: context,
-              //     );
-              //   },
-              // ),
               title: Text(
                 LocaleKeys.Search.tr(),
                 style: TextStyle(color: primaryColor),

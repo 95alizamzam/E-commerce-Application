@@ -42,21 +42,6 @@ class settingsScreen extends StatelessWidget {
                 style: TextStyle(color: primaryColor),
               ),
               titleSpacing: 10,
-              // leading: IconButton(
-              //   onPressed: () {
-              //     goto(
-              //       child: homeScreen(),
-              //       type: PageTransitionType.fade,
-              //       context: context,
-              //     );
-              //   },
-              //   icon: Icon(
-              //     context.locale.toString() == "ar"
-              //         ? Icons.arrow_forward_ios_rounded
-              //         : Icons.arrow_back_ios_new_rounded,
-              //     color: primaryColor,
-              //   ),
-              // ),
             ),
             body: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 10),

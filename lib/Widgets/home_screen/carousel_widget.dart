@@ -19,11 +19,18 @@ class carouselWidget extends StatelessWidget {
           child: CarouselSlider(
             items: cubit.appbanners,
             options: CarouselOptions(
-              height: 100,
+              viewportFraction: 0.4,
+              disableCenter: true,
+              scrollPhysics: ScrollPhysics(
+                parent: const BouncingScrollPhysics(),
+              ),
               autoPlay: true,
               enlargeCenterPage: true,
               initialPage: 0,
-              viewportFraction: 0.4,
+              pageSnapping: true,
+              pauseAutoPlayOnTouch: true,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              autoPlayAnimationDuration: Duration(milliseconds: 800),
             ),
           ),
         );

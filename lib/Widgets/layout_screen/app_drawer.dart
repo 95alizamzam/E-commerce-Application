@@ -133,33 +133,33 @@ Widget itemBuilder({
           ),
           onPressed: () {
             Navigator.of(context).pop();
-            if (title == 'Home Screen') {
+            if (title == LocaleKeys.Home_Screen.tr()) {
               goto(
                 child: homeScreen(),
                 type: PageTransitionType.fade,
                 context: context,
               );
-            } else if (title == 'Categories Screen') {
+            } else if (title == LocaleKeys.Categories_Screen.tr()) {
               goto(
                 child: categoriesScreen(),
                 type: PageTransitionType.fade,
                 context: context,
               );
-            } else if (title == 'Rating Screen') {
+            } else if (title == LocaleKeys.Rating_Screen.tr()) {
               cubit.fetchUserRatings(userId: userId);
               goto(
                 child: ratingScreen(),
                 type: PageTransitionType.fade,
                 context: context,
               );
-            } else if (title == 'Favorites Screen') {
+            } else if (title == LocaleKeys.Favorites_Screen.tr()) {
               cubit.getFavoritesProducts(userId: userId);
               goto(
                 child: favoriteScreen(),
                 type: PageTransitionType.fade,
                 context: context,
               );
-            } else if (title == 'Shopping cart Screen') {
+            } else if (title == LocaleKeys.Shopping_cart_Screen.tr()) {
               if (cartId == 'empty') {
                 goto(
                   child: shoppingCartScreen(),

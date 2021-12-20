@@ -23,19 +23,15 @@ class appCubit extends Cubit<appCubitStates> {
 
   static appCubit get(context) => BlocProvider.of(context);
 
-  List<String> appTitiles = [
-    "home Screen",
-    "Categories",
-    "Favorites",
-    "Shpping cart",
-    "Settings",
-  ];
-
   List<Widget> appbanners = const [
     Image(image: AssetImage('assets/banners/banner1.jpg')),
     Image(image: AssetImage('assets/banners/banner2.jpg')),
     Image(image: AssetImage('assets/banners/banner3.jpg')),
     Image(image: AssetImage('assets/banners/banner4.jpg')),
+    Image(image: AssetImage('assets/banners/b1.png')),
+    Image(image: AssetImage('assets/banners/b2.jpg')),
+    Image(image: AssetImage('assets/banners/b3.jpg')),
+    Image(image: AssetImage('assets/banners/b4.png')),
   ];
 
   // fetch all categories
@@ -96,7 +92,7 @@ class appCubit extends Cubit<appCubitStates> {
       if (returnedData['Error'] != null) {
         emit(setFavProductFailed());
       } else {
-        if (returnedData['status'] == 'Deleted from favorites') {
+        if (returnedData['status'] == 'Deleted') {
           getFavoritesProducts(userId: userId).then((_) {
             productFavState.remove(productId);
           });
@@ -171,10 +167,12 @@ class appCubit extends Cubit<appCubitStates> {
   void addItemsToCart({
     required int pId,
     required String cartId,
+    required int quantity,
   }) {
     http.post(Uri.parse(basicUrl + '/cart/addproducts'), body: {
       "productId": pId.toString(),
       "cartId": cartId,
+      "quantity": quantity.toString(),
       "token": userToken
     }).then((value) {
       if (value.statusCode == 402) {
@@ -210,7 +208,7 @@ class appCubit extends Cubit<appCubitStates> {
       },
     ).then((value) {
       cartProducts = productsModal.fromJson(json.decode(value.body));
-      calculateTotal();
+      calculateTotalPrice();
       emit(fetchCartProductsSuccessfully());
     }).catchError((error) {
       print(error);
@@ -218,11 +216,29 @@ class appCubit extends Cubit<appCubitStates> {
     });
   }
 
+  void updateQuantity({
+    required String cartId,
+    required int productId,
+    required int quantity,
+  }) {
+    http.patch(Uri.parse(basicUrl + '/cart/updateQuantity'), body: {
+      "cartId": cartId,
+      "productId": productId.toString(),
+      "quantity": quantity.toString(),
+    }).then((value) {
+      if (value.statusCode == 200) {
+        fetchAllCartProducts(cartId: cartId);
+      }
+    }).catchError((error) {
+      print(error);
+    });
+  }
+
   int totalPrice = 0;
-  void calculateTotal() {
+  void calculateTotalPrice() {
     totalPrice = 0;
     cartProducts!.data.forEach((element) {
-      totalPrice += element.price!;
+      totalPrice += element.price! * element.quantity!;
     });
   }
 
@@ -403,6 +419,7 @@ class appCubit extends Cubit<appCubitStates> {
       "ratingValue": rateValue.toString(),
     }).then((value) {
       if (value.statusCode == 200) {
+        emit(RateTheProductSuccessfully());
         fetchUserRatings(userId: userId);
       } else {
         print('Error in rateProducts Method');
@@ -441,27 +458,6 @@ class appCubit extends Cubit<appCubitStates> {
     }).catchError((err) {
       print('Error : $err ');
     });
-  }
-
-  // last thing.....
-  List<Map<String, int>> orderDetails = [];
-
-  void increaseCounter({required int productId}) {
-    orderDetails.forEach((element) {
-      if (element['ProductId'] == productId) {}
-    });
-    emit(increaseCounterState());
-  }
-
-  void decreaseCounter() {
-    emit(decreaseCounterState());
-  }
-
-  double calPrice({
-    required double price,
-    required int quantity,
-  }) {
-    return price * quantity;
   }
 
   void changeAppLanguage({

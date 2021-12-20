@@ -123,91 +123,97 @@ class productDetails extends StatelessWidget {
             );
           }
         }
+        if (state is RateTheProductSuccessfully) {
+          ScaffoldMessenger.of(context).showSnackBar(sbarBuilder(
+            messsage: "Rating Done Successfully",
+            backGroundColor: secondaryColor,
+          ));
+        }
       },
       builder: (context, state) {
         final userData = userCubit.get(context).userObject;
         final cubit = appCubit.get(context);
         final data = cubit.product_Modal!.data;
         final product = data.firstWhere((element) => element.id == productId);
-        return SafeArea(
-          child: Scaffold(
-            backgroundColor: secondaryColor,
-            body: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  leading: IconButton(
-                      onPressed: () {
-                        goto(
-                          child: homeScreen(),
-                          type: PageTransitionType.fade,
-                          context: context,
-                        );
-                      },
-                      icon: Icon(
-                        Icons.arrow_back_ios_new_outlined,
-                        color: primaryColor,
-                      )),
-                  expandedHeight: 400,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Image(
-                      image: NetworkImage(product.image!),
-                      width: double.infinity,
-                      fit: BoxFit.fitHeight,
+        return WillPopScope(
+          onWillPop: () async {
+            goto(
+              child: homeScreen(),
+              type: PageTransitionType.fade,
+              context: context,
+            );
+            return true;
+          },
+          child: SafeArea(
+            child: Scaffold(
+              backgroundColor: secondaryColor,
+              body: CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    collapsedHeight: 20,
+                    toolbarHeight: 20,
+                    expandedHeight: 400,
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Image(
+                        image: NetworkImage(product.image!),
+                        width: double.infinity,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
 
-                // body
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      const SizedBox(height: 20),
-                      productInfo(
-                        title: product.title!,
-                        descreption: product.descreption!,
-                        price: product.price.toString(),
-                        quantity: product.quantity.toString(),
-                      ),
-                      const SizedBox(height: 40),
-                      downItem(
-                        ctx: context,
-                        index: 1,
-                        text: 'Rating the Product',
-                        clr: secondaryColor,
-                        productId: productId,
-                        userId: userData!.userId.toString(),
-                        cubit: cubit,
-                        cartId: null,
-                      ),
-                      const SizedBox(height: 20),
-                      cubit.cartObject == null
-                          ? Container()
-                          : downItem(
-                              index: 0,
-                              text: 'Add To Cart',
-                              clr: secondaryColor,
-                              productId: productId,
-                              userId: userData.userId.toString(),
-                              cubit: cubit,
-                              cartId: cubit.cartObject!.cartId.toString(),
-                              ctx: context,
-                            ),
-                      const SizedBox(height: 20),
-                      downItem(
-                        ctx: context,
-                        index: 1,
-                        text: 'Add To Favorites',
-                        clr: secondaryColor,
-                        productId: productId,
-                        userId: userData.userId.toString(),
-                        cubit: cubit,
-                        cartId: null,
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+                  // body
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        const SizedBox(height: 20),
+                        productInfo(
+                          title: product.title!,
+                          descreption: product.descreption!,
+                          price: product.price.toString(),
+                          quantity: product.quantity.toString(),
+                        ),
+                        const SizedBox(height: 40),
+                        downItem(
+                          ctx: context,
+                          index: 2,
+                          text: 'Rating the Product',
+                          clr: secondaryColor,
+                          productId: productId,
+                          userId: userData!.userId.toString(),
+                          cubit: cubit,
+                          cartId: null,
+                        ),
+                        const SizedBox(height: 20),
+                        cubit.cartObject == null
+                            ? Container()
+                            : downItem(
+                                index: 0,
+                                text: 'Add To Cart',
+                                clr: secondaryColor,
+                                productId: productId,
+                                userId: userData.userId.toString(),
+                                cubit: cubit,
+                                cartId: cubit.cartObject!.cartId.toString(),
+                                ctx: context,
+                              ),
+                        const SizedBox(height: 20),
+                        downItem(
+                          ctx: context,
+                          index: 1,
+                          text: 'Add To Favorites',
+                          clr: secondaryColor,
+                          productId: productId,
+                          userId: userData.userId.toString(),
+                          cubit: cubit,
+                          cartId: null,
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -284,7 +290,7 @@ Widget downItem({
             });
       } else {
         // add or remove item from product details screen
-        cubit.addItemsToCart(pId: productId, cartId: cartId!);
+        cubit.addItemsToCart(pId: productId, cartId: cartId!, quantity: 1);
       }
     },
     child: Container(
@@ -301,11 +307,13 @@ Widget downItem({
       ),
       child: Text(
           index == 1
-              ? cubit.productFavState.contains(productId)
+              ? (cubit.productFavState.contains(productId))
                   ? 'Unfavorite Product'
                   : text
-              : cubit.productsInCart.contains(productId)
-                  ? 'Remove From Cart'
+              : (index == 0)
+                  ? (cubit.productsInCart.contains(productId))
+                      ? 'Remove From Cart'
+                      : text
                   : text,
           style: TextStyle(
             color: primaryColor,

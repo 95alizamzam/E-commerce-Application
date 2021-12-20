@@ -35,16 +35,11 @@ class productsWidget extends StatelessWidget {
                       )),
                       IconButton(
                         onPressed: () {
-                          cubit.changeShowMethod(val: true);
+                          cubit.changeShowMethod(
+                              val: cubit.isGrid ? false : true);
                         },
-                        icon: Icon(Icons.grid_view, color: primaryColor),
-                        splashRadius: 1,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          cubit.changeShowMethod(val: false);
-                        },
-                        icon: Icon(Icons.list, color: primaryColor),
+                        icon: Icon(cubit.isGrid ? Icons.list : Icons.grid_view,
+                            color: primaryColor),
                         splashRadius: 1,
                       ),
                     ],

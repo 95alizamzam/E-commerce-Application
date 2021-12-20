@@ -43,6 +43,10 @@ void main() async {
       statusBarIconBrightness: Brightness.light,
     ),
   );
+
+  print(userToken);
+  print(tokenDate);
+
   runApp(
     EasyLocalization(
       supportedLocales: [
