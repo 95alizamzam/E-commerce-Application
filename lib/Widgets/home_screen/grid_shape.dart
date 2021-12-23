@@ -17,7 +17,9 @@ class gridShape extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           final cubit = appCubit.get(context);
-          final data = cubit.product_Modal!.data;
+          final data = cubit.isFilterDone
+              ? cubit.filteredModal!.data
+              : cubit.product_Modal!.data;
           return cubit.product_Modal == null
               ? CircularProgressIndicator()
               : Container(
@@ -119,11 +121,14 @@ Widget gridItem({
                       userId: userId!,
                     );
                   },
-                  child: Icon(
-                    cubit.productFavState.contains(productId)
-                        ? Icons.favorite
-                        : Icons.favorite_outline_outlined,
-                    color: primaryColor,
+                  child: AnimatedCrossFade(
+                    firstChild: Icon(Icons.favorite, color: primaryColor),
+                    secondChild: Icon(Icons.favorite_outline_outlined,
+                        color: primaryColor),
+                    duration: Duration(seconds: 1),
+                    crossFadeState: cubit.productFavState.contains(productId)
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
                   ),
                 )
               ],

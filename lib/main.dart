@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_node/app_screens/login_screen.dart';
-import 'package:flutter_node/app_screens/no_internet_Screen.dart';
 import 'package:flutter_node/app_screens/splash_screen.dart';
 import 'package:flutter_node/shared/app_cubit/cubit.dart';
 import 'package:flutter_node/shared/constants.dart';
@@ -14,14 +12,13 @@ import 'package:flutter_node/shared/user_cubit/cubit_state.dart';
 import 'package:flutter_node/translations/codegen_loader.g.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:page_transition/page_transition.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await sharedPrefrences.init();
 
-  // sharedPrefrences.clearData();
+  //sharedPrefrences.clearData();
 
   isDark = sharedPrefrences.getData(dataType: 'Bool', key: 'isDark') ?? true;
   userToken =

@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_node/Widgets/shopping_cart_widgets/item_builder.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_node/shared/app_cubit/cubit_states.dart';
 import 'package:flutter_node/shared/constants.dart';
 import 'package:flutter_node/shared/styles.dart';
 import 'package:flutter_node/shared/user_cubit/cubit.dart';
+import 'package:flutter_node/translations/local_keys.dart';
 import 'package:page_transition/page_transition.dart';
 
 class shoppingCartScreen extends StatelessWidget {
@@ -55,7 +57,7 @@ class shoppingCartScreen extends StatelessWidget {
               titleSpacing: 10,
               backgroundColor: secondaryColor,
               title: Text(
-                'Shopping Cart',
+                LocaleKeys.Shopping_cart_Screen.tr(),
                 style: TextStyle(color: primaryColor),
               ),
             ),

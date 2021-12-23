@@ -42,6 +42,55 @@ class productsWidget extends StatelessWidget {
                             color: primaryColor),
                         splashRadius: 1,
                       ),
+                      PopupMenuButton(
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: primaryColor,
+                        ),
+                        color: secondaryColor,
+                        shape: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: primaryColor),
+                        ),
+                        itemBuilder: (_) {
+                          return [
+                            PopupMenuItem(
+                              onTap: () {
+                                cubit.sortProductsAlpatically();
+                              },
+                              child: Text(
+                                'Sort Alphabetically',
+                                style: TextStyle(color: primaryColor),
+                              ),
+                            ),
+                            PopupMenuItem(
+                              onTap: () {
+                                cubit.sortProductsPrice();
+                              },
+                              child: Text(
+                                'Sort by price',
+                                style: TextStyle(color: primaryColor),
+                              ),
+                            ),
+                            PopupMenuItem(
+                              onTap: () {},
+                              child: Text(
+                                'Sort by rating',
+                                style: TextStyle(color: primaryColor),
+                              ),
+                            ),
+                            PopupMenuItem(
+                              onTap: () {
+                                cubit.sortProductsQuantity();
+                              },
+                              child: Text(
+                                'Sort by Quantity',
+                                style: TextStyle(color: primaryColor),
+                              ),
+                            ),
+                          ];
+                        },
+                      ),
                     ],
                   ),
                 ),

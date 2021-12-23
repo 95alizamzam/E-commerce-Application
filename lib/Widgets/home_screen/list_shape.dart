@@ -16,7 +16,9 @@ class listShape extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           final cubit = appCubit.get(context);
-          final data = cubit.product_Modal!.data;
+          final data = cubit.isFilterDone
+              ? cubit.filteredModal!.data
+              : cubit.product_Modal!.data;
           return cubit.product_Modal == null
               ? CircularProgressIndicator()
               : Container(

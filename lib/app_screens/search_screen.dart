@@ -24,7 +24,7 @@ class searchScreen extends StatelessWidget {
               backgroundColor: secondaryColor,
               duration: Duration(milliseconds: 600),
               content: Text(
-                'Search Data Cleared',
+                LocaleKeys.Search_Data_Cleared.tr(),
                 style: TextStyle(color: primaryColor),
               )));
         }
@@ -78,7 +78,7 @@ class searchScreen extends StatelessWidget {
                           Icons.search,
                           color: primaryColor,
                         ),
-                        hintText: 'Type To Search',
+                        hintText: LocaleKeys.Type_To_Search.tr(),
                         hintStyle: TextStyle(color: primaryColor),
                         enabled: true,
                         enabledBorder: OutlineInputBorder(
@@ -126,12 +126,12 @@ class searchScreen extends StatelessWidget {
                       : Container(),
                   state is searchedProductsEmpty
                       ? Text(
-                          'There are No Products For this Search',
+                          LocaleKeys.There_are_No_Products_For_this_Search.tr(),
                           style: TextStyle(color: primaryColor),
                         )
                       : (cubit.searchedProducts == null)
                           ? Text(
-                              'Search about Your Products ',
+                              LocaleKeys.Search_about_Your_Products.tr(),
                               style: TextStyle(
                                 color: primaryColor,
                                 fontSize: 20,

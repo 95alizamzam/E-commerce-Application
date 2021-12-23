@@ -78,3 +78,9 @@ class FetchRatingsProductsSuccess extends appCubitStates {}
 class changeLanguageSuccessfully extends appCubitStates {}
 
 class RateTheProductSuccessfully extends appCubitStates {}
+
+class ProductsSortedByNames extends appCubitStates {}
+
+class ProductsSortedByPrice extends appCubitStates {}
+
+class ProductsSortedByQuantity extends appCubitStates {}

@@ -61,6 +61,7 @@ class loginScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(6),
                   child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           margin: const EdgeInsets.only(bottom: 20),
@@ -77,7 +78,9 @@ class loginScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                'Login with Your Account and discover our Products',
+                                LocaleKeys
+                                        .Login_with_Your_Account_and_discover_our_Products
+                                    .tr(),
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,

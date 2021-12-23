@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_node/app_screens/cat_products.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_node/shared/app_cubit/cubit.dart';
 import 'package:flutter_node/shared/app_cubit/cubit_states.dart';
 import 'package:flutter_node/shared/constants.dart';
 import 'package:flutter_node/shared/styles.dart';
+import 'package:flutter_node/translations/local_keys.dart';
 import 'package:page_transition/page_transition.dart';
 
 class categoriesScreen extends StatelessWidget {
@@ -35,8 +37,8 @@ class categoriesScreen extends StatelessWidget {
               appBar: AppBar(
                 elevation: 0,
                 titleSpacing: 10,
-                title:
-                    Text('Categories', style: TextStyle(color: primaryColor)),
+                title: Text(LocaleKeys.Categories.tr(),
+                    style: TextStyle(color: primaryColor)),
                 backgroundColor: secondaryColor,
               ),
               body: ListView.separated(

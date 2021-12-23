@@ -10,12 +10,9 @@ import 'package:flutter_node/app_screens/filter_screen.dart';
 import 'package:flutter_node/app_screens/search_screen.dart';
 import 'package:flutter_node/shared/app_cubit/cubit.dart';
 import 'package:flutter_node/shared/app_cubit/cubit_states.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_node/shared/constants.dart';
 
 import 'package:flutter_node/shared/styles.dart';
-import 'package:flutter_node/shared/user_cubit/cubit.dart';
-import 'package:flutter_node/shared/user_cubit/cubit_state.dart';
 import 'package:flutter_node/translations/local_keys.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -80,7 +77,7 @@ class homeScreen extends StatelessWidget {
             body: cubit.cat_Modal == null || cubit.product_Modal == null
                 ? Center(
                     child: FadingText(
-                      'Loading...',
+                      LocaleKeys.Loading.tr(),
                       style: TextStyle(
                         fontSize: 20,
                         color: primaryColor,

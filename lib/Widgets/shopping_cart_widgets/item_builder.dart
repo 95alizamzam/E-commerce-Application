@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_node/shared/app_cubit/cubit.dart';
 import 'package:flutter_node/shared/styles.dart';
@@ -121,7 +122,13 @@ class itemBuilder extends StatelessWidget {
                           height: 30,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.horizontal(
-                                left: Radius.circular(10.0)),
+                              left: context.locale == Locale('en')
+                                  ? Radius.circular(10.0)
+                                  : Radius.circular(0),
+                              right: context.locale == Locale('en')
+                                  ? Radius.circular(0)
+                                  : Radius.circular(10.0),
+                            ),
                             color: primaryColor,
                           ),
                           child: Icon(
@@ -160,7 +167,13 @@ class itemBuilder extends StatelessWidget {
                           height: 30,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.horizontal(
-                                right: Radius.circular(10.0)),
+                              right: context.locale == Locale('en')
+                                  ? Radius.circular(10.0)
+                                  : Radius.circular(0),
+                              left: context.locale == Locale('en')
+                                  ? Radius.circular(0)
+                                  : Radius.circular(10.0),
+                            ),
                             color: primaryColor,
                           ),
                           child: Icon(

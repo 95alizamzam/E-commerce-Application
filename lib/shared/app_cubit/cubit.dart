@@ -56,6 +56,31 @@ class appCubit extends Cubit<appCubitStates> {
     });
   }
 
+  void sortProductsAlpatically() {
+    product_Modal!.data.sort((item1, item2) =>
+        item1.title!.toUpperCase().compareTo(item2.title!.toUpperCase()));
+
+    emit(ProductsSortedByNames());
+  }
+
+  void sortProductsPrice() {
+    product_Modal!.data.sort(
+      (item1, item2) {
+        return item1.price!.compareTo(item2.price!);
+      },
+    );
+    emit(ProductsSortedByPrice());
+  }
+
+  void sortProductsQuantity() {
+    product_Modal!.data.sort(
+      (item1, item2) {
+        return item1.quantity!.compareTo(item2.quantity!);
+      },
+    );
+    emit(ProductsSortedByQuantity());
+  }
+
   //fetch product to certain category
   productsModal? catProducts;
   void getcatProducts({
@@ -120,7 +145,8 @@ class appCubit extends Cubit<appCubitStates> {
       "userId": userId,
     }).then((value) {
       emit(getFavoritesProductsLoading());
-      final data = json.decode(value.body);
+      final List<dynamic> data = json.decode(value.body);
+      productFavState.length = data.length;
       favProducts = productsModal.fromJson(data);
       emit(getFavoritesProductsState());
     }).catchError((error) {
@@ -207,7 +233,9 @@ class appCubit extends Cubit<appCubitStates> {
         "token": userToken,
       },
     ).then((value) {
-      cartProducts = productsModal.fromJson(json.decode(value.body));
+      final data = json.decode(value.body);
+      cartProducts = productsModal.fromJson(data);
+      productsInCart.length = data.length;
       calculateTotalPrice();
       emit(fetchCartProductsSuccessfully());
     }).catchError((error) {
@@ -349,6 +377,8 @@ class appCubit extends Cubit<appCubitStates> {
   double maxPriceValue = 0;
   double minPriceValue = 0;
   List<String> categories = [];
+  productsModal? filteredModal;
+  bool isFilterDone = false;
   void getFilteredProducts({
     required List<String> selectedCategories,
     required double selectedPrice,
@@ -364,7 +394,8 @@ class appCubit extends Cubit<appCubitStates> {
       if (filteredData.toString() == "[]") {
         emit(FilteredProductsEmpty());
       } else if (value.statusCode == 200) {
-        product_Modal = productsModal.fromJson(filteredData);
+        filteredModal = productsModal.fromJson(filteredData);
+        isFilterDone = true;
         emit(getFilteredProductsDone());
       } else {
         emit(getFilteredProductsFailed());
@@ -379,8 +410,8 @@ class appCubit extends Cubit<appCubitStates> {
     maxPriceValue = 0;
     minPriceValue = 0;
     categories = [];
+    isFilterDone = false;
 
-    getAllProducts();
     emit(FiltersCleared());
   }
 
@@ -429,6 +460,7 @@ class appCubit extends Cubit<appCubitStates> {
     });
   }
 
+  final List<int> numberOfRating = [];
   RatingsModal? ratedProducts;
   void fetchUserRatings({
     required String userId,
@@ -438,6 +470,7 @@ class appCubit extends Cubit<appCubitStates> {
     }).then((value) {
       final data = json.decode(value.body)['result'];
       ratedProducts = RatingsModal.fromJson(data);
+      numberOfRating.length = data.length;
       emit(FetchRatingsProductsSuccess());
     }).catchError((error) {
       print('Error = $error');

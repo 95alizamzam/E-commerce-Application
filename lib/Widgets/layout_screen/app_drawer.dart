@@ -16,6 +16,7 @@ import 'package:flutter_node/shared/styles.dart';
 import 'package:flutter_node/shared/user_cubit/cubit.dart';
 import 'package:flutter_node/translations/local_keys.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:badges/badges.dart';
 
 class appDrawer extends StatelessWidget {
   appDrawer({Key? key, required this.appcubit}) : super(key: key);
@@ -35,8 +36,14 @@ class appDrawer extends StatelessWidget {
       "leadingIcon": Icons.shopping_cart,
       "title": LocaleKeys.Shopping_cart_Screen.tr()
     },
-    {"leadingIcon": Icons.star, "title": LocaleKeys.Rating_Screen.tr()},
-    {"leadingIcon": Icons.settings, "title": LocaleKeys.Settings.tr()},
+    {
+      "leadingIcon": Icons.star,
+      "title": LocaleKeys.Rating_Screen.tr(),
+    },
+    {
+      "leadingIcon": Icons.settings,
+      "title": LocaleKeys.Settings.tr(),
+    },
   ];
 
   @override
@@ -120,7 +127,24 @@ Widget itemBuilder({
     child: ListTile(
       minLeadingWidth: 10,
       minVerticalPadding: 2,
-      leading: Icon(ico, color: primaryColor),
+      leading: ico == Icons.shopping_cart ||
+              ico == Icons.favorite_border ||
+              ico == Icons.star
+          ? Badge(
+              badgeColor: primaryColor,
+              padding: const EdgeInsets.all(4),
+              badgeContent: ico == Icons.shopping_cart
+                  ? Text(cubit.productsInCart.length.toString())
+                  : (ico == Icons.star)
+                      ? Text(cubit.numberOfRating.length.toString())
+                      : Text(cubit.productFavState.length.toString()),
+              position: BadgePosition(
+                isCenter: false,
+                top: -10,
+                end: -4,
+              ),
+              child: Icon(ico, color: primaryColor))
+          : Icon(ico, color: primaryColor),
       title: Text(
         title,
         style: TextStyle(

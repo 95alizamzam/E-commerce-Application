@@ -27,7 +27,7 @@ class _filterScreenState extends State<filterScreen> {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: primaryColor,
             content: Text(
-              'Opps, There is No Products for Those Filters !!',
+              LocaleKeys.Opps_There_is_No_Products_for_Those_Filters.tr(),
               style: TextStyle(color: secondaryColor),
             ),
           ));
@@ -37,7 +37,7 @@ class _filterScreenState extends State<filterScreen> {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: primaryColor,
             content: Text(
-              'Filtered Products Done Successfully',
+              LocaleKeys.Filtered_Products_Done_Successfully.tr(),
               style: TextStyle(color: secondaryColor),
             ),
           ));
@@ -52,7 +52,7 @@ class _filterScreenState extends State<filterScreen> {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: primaryColor,
             content: Text(
-              'Filtered Products reset Successfully',
+              LocaleKeys.Filtered_Products_reset_Successfully.tr(),
               style: TextStyle(color: secondaryColor),
             ),
           ));
@@ -95,9 +95,10 @@ class _filterScreenState extends State<filterScreen> {
               ),
               body: ListView(
                 children: [
-                  filterTitle(title: 'Filter By Category'),
+                  filterTitle(title: LocaleKeys.Filter_By_Category.tr()),
                   filterIntro(
-                      text: 'Here You can Filter products by Categories  :'),
+                      text: LocaleKeys
+                          .Here_You_can_Filter_products_by_Categories.tr()),
                   Wrap(
                       alignment: WrapAlignment.spaceAround,
                       spacing: 10,
@@ -123,10 +124,11 @@ class _filterScreenState extends State<filterScreen> {
                             });
                       }).toList()),
                   const SizedBox(height: 20),
-                  filterTitle(title: 'Filter By Price'),
+                  filterTitle(title: LocaleKeys.Filter_By_Price.tr()),
                   filterIntro(
-                      text:
-                          'Here You can Filter products by Price , Select Min and Max Price  :'),
+                      text: LocaleKeys
+                              .Here_You_can_Filter_products_by_Price_Select_Min_and_Max_Price
+                          .tr()),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
@@ -220,7 +222,7 @@ class _filterScreenState extends State<filterScreen> {
                               color: primaryColor,
                               border: Border.all(color: secondaryColor),
                             ),
-                            child: Text('Save Changes',
+                            child: Text(LocaleKeys.Save_Changes.tr(),
                                 style: TextStyle(
                                   color: secondaryColor,
                                   fontSize: 18,
