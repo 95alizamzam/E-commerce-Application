@@ -29,7 +29,7 @@ class getUserDataSuccessfully extends userCubitStates {}
 
 class getUserDataFailed extends userCubitStates {}
 
-// class autoLogoutState extends userCubitStates {}
+class autoLogoutState extends userCubitStates {}
 
 class loginStateFailed extends userCubitStates {
   final errorMsg;

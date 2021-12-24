@@ -4,6 +4,8 @@ class appinitalState extends appCubitStates {}
 
 class changeIndexState extends appCubitStates {}
 
+class getAllCategoriesLoadingState extends appCubitStates {}
+
 class getCategoriesState extends appCubitStates {}
 
 class getProductssState extends appCubitStates {}
@@ -84,3 +86,9 @@ class ProductsSortedByNames extends appCubitStates {}
 class ProductsSortedByPrice extends appCubitStates {}
 
 class ProductsSortedByQuantity extends appCubitStates {}
+
+class sortedByRating extends appCubitStates {}
+
+class setFiltersDone extends appCubitStates {}
+
+class changeDrawerIndexState extends appCubitStates {}

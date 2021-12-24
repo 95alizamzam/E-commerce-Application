@@ -1,13 +1,10 @@
 import 'dart:convert';
-
-import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_node/models/cart_model.dart';
 import 'package:flutter_node/models/categories_models.dart';
+import 'package:flutter_node/models/product_avg_rate.dart';
 import 'package:flutter_node/models/products_models.dart';
 import 'package:flutter_node/models/ratingModal.dart';
 import 'package:flutter_node/shared/app_cubit/cubit_states.dart';
@@ -23,20 +20,10 @@ class appCubit extends Cubit<appCubitStates> {
 
   static appCubit get(context) => BlocProvider.of(context);
 
-  List<Widget> appbanners = const [
-    Image(image: AssetImage('assets/banners/banner1.jpg')),
-    Image(image: AssetImage('assets/banners/banner2.jpg')),
-    Image(image: AssetImage('assets/banners/banner3.jpg')),
-    Image(image: AssetImage('assets/banners/banner4.jpg')),
-    Image(image: AssetImage('assets/banners/b1.png')),
-    Image(image: AssetImage('assets/banners/b2.jpg')),
-    Image(image: AssetImage('assets/banners/b3.jpg')),
-    Image(image: AssetImage('assets/banners/b4.png')),
-  ];
-
   // fetch all categories
   categoriesModal? cat_Modal;
   void getAllCategories() {
+    emit(getAllCategoriesLoadingState());
     http.get(Uri.parse(basicUrl + '/category')).then((value) {
       cat_Modal = categoriesModal.fromJson(json.decode(value.body));
       emit(getCategoriesState());
@@ -270,9 +257,6 @@ class appCubit extends Cubit<appCubitStates> {
     });
   }
 
-  // helper funcrions
-
-  //1- change primary and secondary colors
   void changeAppColors({required BuildContext context}) {
     showDialog(
         context: context,
@@ -351,8 +335,6 @@ class appCubit extends Cubit<appCubitStates> {
             )));
   }
 
-  //2- change app mood
-
   void changeAppMood({required BuildContext context, required bool val}) {
     isDark = val;
 
@@ -374,9 +356,26 @@ class appCubit extends Cubit<appCubitStates> {
     emit(changeAppMoodState());
   }
 
-  double maxPriceValue = 0;
-  double minPriceValue = 0;
+  RangeValues sliderSelectedValues = RangeValues(20, 50);
   List<String> categories = [];
+
+  void setFilters({
+    RangeValues? sliderValues,
+    String? title,
+  }) {
+    if (title != null) {
+      if (categories.contains(title)) {
+        categories.remove(title.toString().trim());
+      } else {
+        categories.add(title.toString().trim());
+      }
+    }
+
+    sliderSelectedValues = sliderValues ?? sliderSelectedValues;
+
+    emit(setFiltersDone());
+  }
+
   productsModal? filteredModal;
   bool isFilterDone = false;
   void getFilteredProducts({
@@ -407,8 +406,7 @@ class appCubit extends Cubit<appCubitStates> {
   }
 
   void resetFilters() {
-    maxPriceValue = 0;
-    minPriceValue = 0;
+    sliderSelectedValues = RangeValues(20, 50);
     categories = [];
     isFilterDone = false;
 
@@ -452,6 +450,7 @@ class appCubit extends Cubit<appCubitStates> {
       if (value.statusCode == 200) {
         emit(RateTheProductSuccessfully());
         fetchUserRatings(userId: userId);
+        fetchAvgRatings();
       } else {
         print('Error in rateProducts Method');
       }
@@ -474,6 +473,17 @@ class appCubit extends Cubit<appCubitStates> {
       emit(FetchRatingsProductsSuccess());
     }).catchError((error) {
       print('Error = $error');
+    });
+  }
+
+  avgRate? avgRateModal;
+  void fetchAvgRatings() {
+    http.get(Uri.parse(basicUrl + '/product/avgRate')).then((value) {
+      final data = json.decode(value.body);
+      print(data);
+      avgRateModal = avgRate.fromJson(data);
+    }).catchError((error) {
+      print(error.toString());
     });
   }
 
@@ -502,5 +512,11 @@ class appCubit extends Cubit<appCubitStates> {
     }).catchError((err) {
       print('Error with Translation Process');
     });
+  }
+
+  int drawerIndex = 0;
+  void changeDrawerIndex({required int index}) {
+    drawerIndex = index;
+    emit(changeDrawerIndexState());
   }
 }

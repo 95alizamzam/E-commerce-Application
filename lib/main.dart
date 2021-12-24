@@ -18,7 +18,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await sharedPrefrences.init();
 
-  //sharedPrefrences.clearData();
+  // sharedPrefrences.clearData();
 
   isDark = sharedPrefrences.getData(dataType: 'Bool', key: 'isDark') ?? true;
   userToken =
@@ -82,7 +82,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => appCubit()
             ..getAllCategories()
-            ..getAllProducts(),
+            ..getAllProducts()
+            ..fetchAvgRatings(),
         ),
       ],
       child: BlocConsumer<userCubit, userCubitStates>(
@@ -93,6 +94,9 @@ class MyApp extends StatelessWidget {
             } else {
               print('Internet State = false');
             }
+          }
+          if (state is autoLogoutState) {
+            print('logout Now Token EXPIRED');
           }
         },
         builder: (context, state) {

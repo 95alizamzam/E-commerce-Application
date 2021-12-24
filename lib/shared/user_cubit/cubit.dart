@@ -166,6 +166,7 @@ class userCubit extends Cubit<userCubitStates> {
   // get user data
   userModal? userObject;
   void getUserData() {
+    checkValidToken();
     http.post(Uri.parse(basicUrl + '/user'), body: {"token": userToken}).then(
         (value) {
       if (value.statusCode == 409) {
@@ -180,9 +181,9 @@ class userCubit extends Cubit<userCubitStates> {
   }
 
   // check expiration of token
-  // void checkValidToken() {
-  //   Future.delayed(Duration(hours: tokenDate), () => {autoLogout()});
-  // }
+  void checkValidToken() {
+    Future.delayed(Duration(hours: tokenDate), () => {autoLogout()});
+  }
 
   void updateUserData({
     required String userName,
@@ -227,13 +228,13 @@ class userCubit extends Cubit<userCubitStates> {
   }
 
   // auto logout when token is expired
-  // void autoLogout() async {
-  //   userToken = "";
-  //   tokenDate = 0;
-  //   sharedPrefrences.deleteFields(Key: 'tokenDate').then((value) {
-  //     sharedPrefrences.deleteFields(Key: 'storedToken').then((value) {
-  //       emit(autoLogoutState());
-  //     });
-  //   });
-  // }
+  void autoLogout() async {
+    userToken = "";
+    tokenDate = 0;
+    sharedPrefrences.deleteFields(Key: 'tokenDate').then((value) {
+      sharedPrefrences.deleteFields(Key: 'storedToken').then((value) {
+        emit(autoLogoutState());
+      });
+    });
+  }
 }

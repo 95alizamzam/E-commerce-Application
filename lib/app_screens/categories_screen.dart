@@ -1,7 +1,7 @@
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_node/app_screens/cat_products.dart';
+import 'package:flutter_node/Widgets/category_screen_widgets/category_item.dart';
 import 'package:flutter_node/app_screens/home_screen.dart';
 import 'package:flutter_node/shared/app_cubit/cubit.dart';
 import 'package:flutter_node/shared/app_cubit/cubit_states.dart';
@@ -37,26 +37,27 @@ class categoriesScreen extends StatelessWidget {
               appBar: AppBar(
                 elevation: 0,
                 titleSpacing: 10,
-                title: Text(LocaleKeys.Categories.tr(),
-                    style: TextStyle(color: primaryColor)),
+                title: Text(
+                  LocaleKeys.Categories.tr(),
+                  style: TextStyle(color: primaryColor),
+                ),
                 backgroundColor: secondaryColor,
               ),
-              body: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                itemBuilder: (_, index) => catItemBuilder(
-                  catId: data[index].id.toString(),
-                  imageUrl: data[index].image!,
-                  title: data[index].title!,
-                  subtitle: data[index].descreption!,
-                  context: context,
-                  cubit: cubit,
-                ),
-                separatorBuilder: (_, index) => Divider(
-                  color: primaryColor,
-                  endIndent: 10,
-                  indent: 10,
-                ),
-                itemCount: data.length,
+              body: GridView.count(
+                crossAxisCount: 3,
+                childAspectRatio: 3 / 4,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 4,
+                padding: const EdgeInsets.all(6),
+                physics: const BouncingScrollPhysics(),
+                children: data.map((item) {
+                  return categoryItemBuilder(
+                    catId: item.id.toString(),
+                    imageUrl: item.image!,
+                    subtitle: item.descreption!,
+                    title: item.title!,
+                  );
+                }).toList(),
               ),
             ),
           ),
@@ -64,69 +65,4 @@ class categoriesScreen extends StatelessWidget {
       },
     );
   }
-}
-
-Widget catItemBuilder({
-  required String catId,
-  required String imageUrl,
-  required String title,
-  required String subtitle,
-  required BuildContext context,
-  required appCubit cubit,
-}) {
-  return Container(
-    height: 70,
-    padding: const EdgeInsets.all(4),
-    child: Row(
-      children: [
-        FadeInImage(
-          placeholder: AssetImage('assets/images/loading.gif'),
-          image: Image(
-            image: NetworkImage(imageUrl),
-          ).image,
-          width: 80,
-          height: 100,
-          fit: BoxFit.cover,
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title + 'Category',
-                style: TextStyle(
-                  color: primaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey.shade400,
-                ),
-              ),
-            ],
-          ),
-        ),
-        IconButton(
-          onPressed: () {
-            cubit.getcatProducts(catId: catId);
-            goto(
-              child: catProducts(),
-              type: PageTransitionType.fade,
-              context: context,
-            );
-          },
-          icon: Icon(
-            Icons.arrow_forward_ios,
-            color: primaryColor,
-          ),
-        )
-      ],
-    ),
-  );
 }

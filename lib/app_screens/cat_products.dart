@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_node/Widgets/category_products_widget/category_product_item.dart';
 import 'package:flutter_node/app_screens/categories_screen.dart';
 import 'package:flutter_node/app_screens/home_screen.dart';
-import 'package:flutter_node/app_screens/product_details.dart';
 import 'package:flutter_node/shared/app_cubit/cubit.dart';
 import 'package:flutter_node/shared/app_cubit/cubit_states.dart';
 import 'package:flutter_node/shared/constants.dart';
@@ -56,20 +56,18 @@ class catProducts extends StatelessWidget {
                 ),
                 body: Container(
                   color: secondaryColor,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  padding: const EdgeInsets.all(10),
                   child: ListView.separated(
-                    itemBuilder: (_, index) => productBuilder(
+                    itemBuilder: (_, index) => categoryProductItem(
                       pId: myProducts[index].id!,
                       imageUrl: myProducts[index].image!,
                       title: myProducts[index].title!,
                       Descreption: myProducts[index].descreption!,
                       price: myProducts[index].price.toString(),
                       Quantity: myProducts[index].quantity.toString(),
-                      context: context,
                     ),
                     separatorBuilder: (_, index) =>
-                        const Divider(color: Colors.green),
+                        Divider(color: primaryColor),
                     itemCount: myProducts.length,
                   ),
                 ),
@@ -80,36 +78,4 @@ class catProducts extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget productBuilder({
-  required int pId,
-  required String imageUrl,
-  required String title,
-  required String Descreption,
-  required String price,
-  required String Quantity,
-  required BuildContext context,
-}) {
-  TextStyle sty = TextStyle(color: primaryColor);
-  return Row(
-    children: [
-      CircleAvatar(
-        radius: 35,
-        backgroundImage: Image(image: NetworkImage(imageUrl)).image,
-      ),
-      const SizedBox(width: 10),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Name : ' + title, style: sty),
-            Text('Descreption : ' + Descreption, style: sty),
-            Text('Price : ' + price + '\$', style: sty),
-            Text('Quantity : ' + Quantity, style: sty),
-          ],
-        ),
-      ),
-    ],
-  );
 }

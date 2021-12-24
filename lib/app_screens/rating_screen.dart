@@ -102,7 +102,7 @@ Widget ratedItemBilder({
             return AlertDialog(
               title: Text(
                 'Remove Your Rate ?!',
-                style: TextStyle(color: primaryColor),
+                style: TextStyle(color: secondaryColor),
               ),
               actions: [
                 OutlinedButton(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_node/shared/constants.dart';
 import 'package:flutter_node/shared/styles.dart';
 
 class productInfo extends StatelessWidget {

@@ -17,7 +17,7 @@ class productsWidget extends StatelessWidget {
         builder: (context, state) {
           final cubit = appCubit.get(context);
           return Container(
-            height: 500,
+            height: 400,
             child: Column(
               children: [
                 Container(
@@ -36,10 +36,13 @@ class productsWidget extends StatelessWidget {
                       IconButton(
                         onPressed: () {
                           cubit.changeShowMethod(
-                              val: cubit.isGrid ? false : true);
+                            val: cubit.isGrid ? false : true,
+                          );
                         },
-                        icon: Icon(cubit.isGrid ? Icons.list : Icons.grid_view,
-                            color: primaryColor),
+                        icon: Icon(
+                          cubit.isGrid ? Icons.list : Icons.grid_view,
+                          color: primaryColor,
+                        ),
                         splashRadius: 1,
                       ),
                       PopupMenuButton(
@@ -69,13 +72,6 @@ class productsWidget extends StatelessWidget {
                               },
                               child: Text(
                                 'Sort by price',
-                                style: TextStyle(color: primaryColor),
-                              ),
-                            ),
-                            PopupMenuItem(
-                              onTap: () {},
-                              child: Text(
-                                'Sort by rating',
                                 style: TextStyle(color: primaryColor),
                               ),
                             ),
